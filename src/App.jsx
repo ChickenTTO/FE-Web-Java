@@ -7,9 +7,13 @@ import Sidebar     from './components/Sidebar';
 import Footer      from './components/Footer';
 
 import HomePage            from './pages/HomePage';
-import BookingPage         from './pages/Booking'; // Hoặc BookingPage tùy tên file của bạn
+import BookingPage         from './pages/Booking';
 import AdminDashboard      from './pages/AdminDashboard';
 import EquipmentManagement from './pages/EquipmentManagement';
+import LoginPage           from './pages/LoginPage';
+
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute   from './components/ProtectedRoute';
 
 /* ── Public layout: Dành cho Bệnh nhân (Có Header & Footer công khai) ── */
 function PublicLayout() {
@@ -41,24 +45,31 @@ function AdminLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* ─── Các trang Công khai (Bệnh nhân) ─── */}
-        <Route element={<PublicLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/booking" element={<BookingPage />} />
-        </Route>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* ─── Trang Đăng nhập ─── */}
+          <Route path="/login" element={<LoginPage />} />
 
-        {/* ─── Các trang Quản trị (Admin / Quản lý thiết bị) ─── */}
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/equipment" element={<EquipmentManagement />} />
-        </Route>
+          {/* ─── Các trang Công khai (Bệnh nhân) ─── */}
+          <Route element={<PublicLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/booking" element={<BookingPage />} />
+          </Route>
 
-        {/* Điều hướng mặc định nếu gõ sai URL */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          {/* ─── Các trang Quản trị (Cần đăng nhập) ─── */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AdminLayout />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/equipment" element={<EquipmentManagement />} />
+            </Route>
+          </Route>
+
+          {/* Điều hướng mặc định nếu gõ sai URL */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

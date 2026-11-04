@@ -1,7 +1,6 @@
 // src/components/Sidebar.jsx
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  Activity,
   LayoutDashboard,
   CalendarPlus,
   Wrench,
@@ -12,6 +11,7 @@ import {
   LogOut,
   Cross,
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const navItems = [
   { label: 'Tổng quan', to: '/', icon: <Home size={18} />, section: 'Trang chính' },
@@ -23,7 +23,17 @@ const navItems = [
 const sections = ['Trang chính', 'Quản trị'];
 
 function Sidebar() {
-  const location = useLocation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+  };
 
   return (
     <aside className="app-sidebar">
@@ -80,7 +90,11 @@ function Sidebar() {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <button className="sidebar-nav-item" style={{ color: '#ff6b6b' }}>
+        <button
+          onClick={handleLogout}
+          className="sidebar-nav-item"
+          style={{ color: '#ff6b6b', background: 'transparent', border: 'none', width: '100%', textAlign: 'left' }}
+        >
           <span className="nav-icon"><LogOut size={18} /></span>
           <span>Đăng xuất</span>
         </button>
