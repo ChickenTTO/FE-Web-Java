@@ -3,8 +3,9 @@
    Sử dụng data-bs-toggle="collapse" → yêu cầu bootstrap.bundle.min.js đã import.
    ─────────────────────────────────────────────────────────────────────────────── */
 
-import { NavLink, Link } from 'react-router-dom';
-import { Cross, LogIn, Phone, Menu } from 'lucide-react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { Cross, LogIn, LogOut, Phone, Menu, LayoutDashboard, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 /* Nav links data */
 const NAV_LINKS = [
@@ -15,6 +16,18 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+  };
+
   return (
     <nav
       id="main-navbar"
@@ -144,36 +157,69 @@ export default function Navbar() {
               </span>
             </div>
 
-            {/* Login button */}
-            <Link
-              id="navbar-login-btn"
-              to="/admin"
-              className="btn d-flex align-items-center gap-2"
-              style={{
-                background: 'linear-gradient(135deg, #1a6fdb, #1355b0)',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                padding: '8px 20px',
-                borderRadius: 8,
-                border: 'none',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                boxShadow: '0 4px 12px rgba(26,111,219,0.3)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 6px 18px rgba(26,111,219,0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,111,219,0.3)';
-              }}
-            >
-              <LogIn size={16} />
-              Đăng nhập
-            </Link>
+            {/* Auth button state */}
+            {isAuthenticated ? (
+              <div className="d-flex align-items-center gap-2">
+                <Link
+                  to="/admin"
+                  className="btn btn-light d-flex align-items-center gap-2 border"
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    borderRadius: 8,
+                    padding: '8px 16px',
+                  }}
+                >
+                  <LayoutDashboard size={16} color="#1a6fdb" />
+                  <span>{user?.username || user?.fullName || 'Quản trị'}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="btn btn-outline-danger d-flex align-items-center gap-2"
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    borderRadius: 8,
+                    padding: '8px 14px',
+                  }}
+                  title="Đăng xuất"
+                >
+                  <LogOut size={16} />
+                  <span>Thoát</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                id="navbar-login-btn"
+                to="/login"
+                className="btn d-flex align-items-center gap-2"
+                style={{
+                  background: 'linear-gradient(135deg, #1a6fdb, #1355b0)',
+                  color: '#fff',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  padding: '8px 20px',
+                  borderRadius: 8,
+                  border: 'none',
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 4px 12px rgba(26,111,219,0.3)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 6px 18px rgba(26,111,219,0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,111,219,0.3)';
+                }}
+              >
+                <LogIn size={16} />
+                Đăng nhập
+              </Link>
+            )}
           </div>
         </div>
         {/* /Collapsible */}
