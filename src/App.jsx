@@ -1,10 +1,11 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar      from './components/Navbar';   // Navbar công khai
 import AdminNavbar from './components/AdminNavbar'; // Thanh topbar quản trị
 import Sidebar     from './components/Sidebar';
 import Footer      from './components/Footer';
+import PageTransition from './components/PageTransition';
 
 import HomePage            from './pages/HomePage';
 import BookingPage         from './pages/Booking';
@@ -21,7 +22,7 @@ function PublicLayout() {
     <>
       <Navbar />
       <main className="public-content">
-        <Outlet />
+        <PageTransition />
       </main>
       <Footer />
     </>
@@ -36,7 +37,7 @@ function AdminLayout() {
       <div className="main-content">
         <AdminNavbar />
         <main className="page-wrapper">
-          <Outlet />
+          <PageTransition />
         </main>
       </div>
     </div>
