@@ -33,7 +33,21 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow: 0 4px 16px rgba(0,0,0,0.08);
   --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
-  --transition: all 0.2s ease;
+  /* Motion tokens */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 150ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
+  --transition:
+    color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
 }
 
 /* ---- Base Reset ---- */
@@ -351,6 +365,7 @@ body {
   color: var(--text-primary);
 }
 
+.table-custom tbody tr { transition: background-color var(--dur-fast) var(--ease-out); }
 .table-custom tbody tr:hover { background: var(--gray-100); }
 .table-custom tbody tr:last-child td { border-bottom: none; }
 
@@ -581,7 +596,7 @@ body {
   width: 100%;
   max-width: 560px;
   box-shadow: var(--shadow-md);
-  animation: modalIn 0.2s ease;
+  animation: modalIn var(--dur-base) var(--ease-out);
 }
 
 .modal-card-header {
@@ -628,7 +643,7 @@ body {
   box-shadow: var(--shadow-md);
   font-size: 0.875rem;
   font-weight: 500;
-  animation: slideIn 0.3s ease;
+  animation: slideIn var(--dur-base) var(--ease-spring);
   min-width: 280px;
 }
 
@@ -703,3 +718,174 @@ body {
 
 .gap-sm { gap: 0.5rem; }
 .gap-md { gap: 1rem; }
+
+/* ============================================================
+   MOTION LAYER – smooth transitions & micro-interactions
+   ============================================================ */
+
+html { scroll-padding-top: calc(var(--navbar-height) + 8px); }
+
+/* ---- Route / page transition ---- */
+.page-transition {
+  animation: pageIn var(--dur-slow) var(--ease-out) backwards;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ---- Scroll reveal (see components/Reveal.jsx) ---- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* ---- Hero staggered entrance ---- */
+.hero-stagger > * {
+  animation: pageIn 700ms var(--ease-out) backwards;
+}
+.hero-stagger > *:nth-child(1) { animation-delay: 60ms; }
+.hero-stagger > *:nth-child(2) { animation-delay: 140ms; }
+.hero-stagger > *:nth-child(3) { animation-delay: 220ms; }
+.hero-stagger > *:nth-child(4) { animation-delay: 300ms; }
+.hero-stagger > *:nth-child(5) { animation-delay: 380ms; }
+
+/* ---- Reusable hover/press interactions (replaces JS style mutation) ---- */
+.card-lift {
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.card-lift:hover { transform: translate3d(0, -6px, 0); box-shadow: 0 16px 40px rgba(0,0,0,0.12) !important; }
+.card-lift.card-lift-sm:hover { transform: translate3d(0, -4px, 0); box-shadow: 0 12px 36px rgba(0,0,0,0.12) !important; }
+
+.btn-cta {
+  box-shadow: 0 8px 24px rgba(26,111,219,0.4);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.btn-cta:hover  { transform: translate3d(0, -2px, 0); box-shadow: 0 12px 32px rgba(26,111,219,0.5); color: #fff; }
+
+.btn-glass {
+  transition: background-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.btn-glass:hover { background-color: rgba(255,255,255,0.18) !important; color: #fff; }
+
+.btn-outline-fill {
+  color: var(--accent, var(--primary));
+  background-color: var(--accent-bg, transparent);
+  transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.btn-outline-fill:hover { background-color: var(--accent, var(--primary)); color: #fff; }
+
+.btn-cta:active, .btn-glass:active, .btn-outline-fill:active,
+.btn-primary-custom:active, .btn-icon:active, .btn:active {
+  transform: translate3d(0, 0, 0) scale(0.97);
+  transition-duration: 80ms;
+}
+
+/* Arrow nudge inside CTAs */
+.btn-outline-fill svg, .btn-cta svg { transition: transform var(--dur-base) var(--ease-out); }
+.btn-outline-fill:hover svg, .btn-cta:hover svg { transform: translate3d(3px, 0, 0); }
+
+/* ---- Bootstrap controls: smoother defaults ---- */
+.btn, .form-control, .form-select, .nav-link, .dropdown-item {
+  transition: color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+
+.dropdown-menu.show { animation: dropdownIn var(--dur-base) var(--ease-out); transform-origin: top right; }
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translate3d(0, -6px, 0) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Bootstrap modal (mounted with .show, so animate explicitly) ---- */
+.modal.fade.show.d-block {
+  animation: backdropIn var(--dur-base) var(--ease-out);
+  backdrop-filter: blur(3px);
+}
+.modal.fade.show.d-block .modal-dialog {
+  animation: modalDialogIn 320ms var(--ease-out);
+}
+@keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalDialogIn {
+  from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Accessible focus ring ---- */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  transition: outline-offset var(--dur-fast) var(--ease-out);
+}
+
+/* ---- Skeleton loading ---- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--gray-200);
+  border-radius: 8px;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+.skeleton-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+}
+
+/* Fade content in after data arrives */
+.fade-in { animation: pageIn var(--dur-slow) var(--ease-out) backwards; }
+
+/* ---- Respect user motion preferences ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---- Home: feature cards & social links ---- */
+.why-card {
+  background-color: #f8f9fa;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+}
+.why-card:hover {
+  background-color: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  transform: translate3d(0, -4px, 0);
+}
+
+.social-link {
+  background-color: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.social-link:hover { background-color: #1a6fdb; color: #fff; transform: translate3d(0, -2px, 0); }
+
+/* Keep infinite hero animations on the compositor */
+#hero [style*="animation"] { will-change: transform; }

@@ -21,6 +21,7 @@ import {
   Youtube, Twitter, CheckCircle,
 } from 'lucide-react';
 import { getClinicRooms } from '../services/api';
+import Reveal from '../components/Reveal';
 
 /* ─────────────────────────────────────────────────────────────
    Data tĩnh
@@ -125,7 +126,7 @@ const STATUS_MAP = {
 
 function SectionHeader({ badge, title, subtitle, center = true }) {
   return (
-    <div className={`mb-5 ${center ? 'text-center' : ''}`}>
+    <Reveal className={`mb-5 ${center ? 'text-center' : ''}`}>
       {badge && (
         <span
           className="badge mb-3 px-3 py-2"
@@ -152,7 +153,7 @@ function SectionHeader({ badge, title, subtitle, center = true }) {
           {subtitle}
         </p>
       )}
-    </div>
+    </Reveal>
   );
 }
 
@@ -198,7 +199,7 @@ function HeroSection() {
         <div className="row align-items-center g-5">
 
           {/* Left column – Text */}
-          <div className="col-12 col-lg-6">
+          <div className="col-12 col-lg-6 hero-stagger">
             {/* Badge */}
             <div
               className="d-inline-flex align-items-center gap-2 mb-4"
@@ -246,22 +247,12 @@ function HeroSection() {
               <Link
                 id="hero-book-appointment-btn"
                 to="/booking"
-                className="d-flex align-items-center gap-2"
+                className="d-flex align-items-center gap-2 btn-cta"
                 style={{
                   background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
                   color: '#fff', fontWeight: 700,
                   fontSize: '0.95rem', padding: '13px 28px',
                   borderRadius: 10, textDecoration: 'none',
-                  boxShadow: '0 8px 24px rgba(26,111,219,0.4)',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(26,111,219,0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,111,219,0.4)';
                 }}
               >
                 <CalendarPlus size={18} />
@@ -271,7 +262,7 @@ function HeroSection() {
               <a
                 id="hero-hotline-btn"
                 href="tel:19006868"
-                className="d-flex align-items-center gap-2"
+                className="d-flex align-items-center gap-2 btn-glass"
                 style={{
                   background: 'rgba(255,255,255,0.1)',
                   border: '1.5px solid rgba(255,255,255,0.25)',
@@ -279,10 +270,7 @@ function HeroSection() {
                   fontSize: '0.95rem', padding: '12px 24px',
                   borderRadius: 10, textDecoration: 'none',
                   backdropFilter: 'blur(8px)',
-                  transition: 'all 0.25s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
               >
                 <Phone size={18} />
                 1900 6868
@@ -499,22 +487,13 @@ function ClinicSection({ rooms }) {
 
             return (
               /* Bootstrap responsive grid: 1 col mobile → 2 col tablet → 3 col desktop */
-              <div key={room.id} className="col-12 col-md-6 col-lg-4">
+              <Reveal key={room.id} className="col-12 col-md-6 col-lg-4" delay={(idx % 3) * 80}>
                 <div
-                  className="card h-100 border-0 shadow-sm"
+                  className="card h-100 border-0 shadow-sm card-lift"
                   style={{
                     borderRadius: 16,
-                    transition: 'all 0.25s ease',
                     cursor: 'default',
                     overflow: 'hidden',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.12)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '';
                   }}
                 >
                   {/* Top accent bar */}
@@ -594,23 +573,14 @@ function ClinicSection({ rooms }) {
                         to="/booking"
                         state={{ roomId: room.id }}
                         id={`clinic-book-${room.id}-btn`}
-                        className="d-flex align-items-center justify-content-center gap-2 w-100"
+                        className="d-flex align-items-center justify-content-center gap-2 w-100 btn-outline-fill"
                         style={{
-                          background: color.bg,
-                          color: color.accent,
+                          '--accent': color.accent,
+                          '--accent-bg': color.bg,
                           border: `1.5px solid ${color.accent}33`,
                           fontWeight: 700, fontSize: '0.83rem',
                           padding: '9px', borderRadius: 10,
                           textDecoration: 'none',
-                          transition: 'all 0.2s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = color.accent;
-                          e.currentTarget.style.color = '#fff';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = color.bg;
-                          e.currentTarget.style.color = color.accent;
                         }}
                       >
                         <CalendarPlus size={14} />
@@ -630,7 +600,7 @@ function ClinicSection({ rooms }) {
                     )}
                   </div>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>
@@ -640,20 +610,12 @@ function ClinicSection({ rooms }) {
           <Link
             to="/booking"
             id="clinics-view-all-btn"
-            className="d-inline-flex align-items-center gap-2"
+            className="d-inline-flex align-items-center gap-2 btn-outline-fill"
             style={{
-              color: '#1a6fdb', fontWeight: 700, fontSize: '0.9rem',
+              '--accent': '#1a6fdb',
+              fontWeight: 700, fontSize: '0.9rem',
               textDecoration: 'none', padding: '10px 24px',
               border: '2px solid #1a6fdb', borderRadius: 10,
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#1a6fdb';
-              e.currentTarget.style.color = '#fff';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#1a6fdb';
             }}
           >
             Xem tất cả phòng khám
@@ -687,22 +649,13 @@ function EquipmentSection() {
 
         <div className="row g-4">
           {EQUIPMENT_LIST.map((eq, i) => (
-            <div key={i} className="col-12 col-md-6 col-lg-4">
+            <Reveal key={i} className="col-12 col-md-6 col-lg-4" delay={(i % 3) * 80}>
               <div
-                className="card border-0 h-100"
+                className="card border-0 h-100 card-lift card-lift-sm"
                 style={{
                   borderRadius: 16,
                   boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
-                  transition: 'all 0.25s ease',
                   overflow: 'hidden',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)';
                 }}
               >
                 {/* Colored header */}
@@ -744,7 +697,7 @@ function EquipmentSection() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
@@ -806,23 +759,10 @@ function WhyUsSection() {
         />
         <div className="row g-4">
           {WHY_US.map((item, i) => (
-            <div key={i} className="col-12 col-sm-6 col-lg-3">
+            <Reveal key={i} className="col-12 col-sm-6 col-lg-3" delay={i * 80}>
               <div
-                className="text-center p-4 rounded-4 h-100"
-                style={{
-                  background: '#f8f9fa', border: '1px solid #e9ecef',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#fff';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08)';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#f8f9fa';
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
+                className="text-center p-4 rounded-4 h-100 why-card"
+                style={{ border: '1px solid #e9ecef' }}
               >
                 <div style={{
                   width: 60, height: 60, borderRadius: 16,
@@ -835,7 +775,7 @@ function WhyUsSection() {
                 <h6 style={{ fontWeight: 700, color: '#0d1b2a', marginBottom: '0.5rem' }}>{item.title}</h6>
                 <p style={{ fontSize: '0.82rem', color: '#6c757d', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -952,21 +892,11 @@ function HomeFooter() {
                   href={s.href}
                   id={`footer-${s.label.toLowerCase()}-link`}
                   aria-label={s.label}
+                  className="social-link"
                   style={{
                     width: 36, height: 36, borderRadius: 8,
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.12)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'rgba(255,255,255,0.6)', textDecoration: 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#1a6fdb';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.6)';
+                    textDecoration: 'none',
                   }}
                 >
                   {s.icon}
@@ -1116,12 +1046,30 @@ export default function HomePage() {
       <StatsBar />
 
       {loading ? (
-        <div className="text-center py-5">
-          <div className="spinner-border text-primary" />
-          <div className="mt-3 text-muted" style={{ fontSize: '0.875rem' }}>Đang tải dữ liệu phòng khám...</div>
-        </div>
+        <section style={{ background: '#f8f9fa', padding: '5rem 0' }} aria-busy="true" aria-live="polite">
+          <div className="container">
+            <div className="row g-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="col-12 col-md-6 col-lg-4">
+                  <div className="skeleton-card">
+                    <div className="d-flex justify-content-between mb-3">
+                      <div className="skeleton" style={{ width: 60, height: 60, borderRadius: 14 }} />
+                      <div className="skeleton" style={{ width: 70, height: 22, borderRadius: 100 }} />
+                    </div>
+                    <div className="skeleton mb-2" style={{ width: '70%', height: 16 }} />
+                    <div className="skeleton mb-4" style={{ width: '45%', height: 12 }} />
+                    <div className="skeleton mb-3" style={{ width: '60%', height: 14 }} />
+                    <div className="skeleton" style={{ width: '100%', height: 36, borderRadius: 10 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       ) : (
-        <ClinicSection rooms={rooms} />
+        <div className="fade-in">
+          <ClinicSection rooms={rooms} />
+        </div>
       )}
 
       <EquipmentSection />
