@@ -37,8 +37,16 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await authService.logout();
+    if (user?.isDemo) authService.removeCurrentUser();
+    else await authService.logout();
     setUser(null);
+  };
+
+  const loginDemo = (profile) => {
+    const demoUser = { ...profile, fullName: profile.fullName || profile.name, isDemo: true };
+    authService.setCurrentUser(demoUser);
+    setUser(demoUser);
+    return demoUser;
   };
 
   const value = {
@@ -46,6 +54,7 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user,
     isLoading,
     login,
+    loginDemo,
     logout,
     setUser,
   };

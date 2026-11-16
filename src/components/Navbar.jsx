@@ -6,13 +6,15 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Cross, LogIn, LogOut, Phone, Menu, LayoutDashboard, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { homeFor } from '../services/clinicStore';
 
 /* Nav links data */
 const NAV_LINKS = [
   { label: 'Trang chủ',         to: '/' },
   { label: 'Đặt lịch khám',     to: '/booking' },
-  { label: 'Quản lý thiết bị',  to: '/equipment' },
-  { label: 'Dashboard Quản trị',to: '/admin' },
+  { label: 'Chuyên khoa', to: '/specialties' },
+  { label: 'Bác sĩ', to: '/doctors' },
+  { label: 'Dịch vụ', to: '/services' },
 ];
 
 export default function Navbar() {
@@ -31,11 +33,8 @@ export default function Navbar() {
   return (
     <nav
       id="main-navbar"
-      className="navbar navbar-expand-lg sticky-top shadow-sm"
+      className="navbar navbar-expand-lg sticky-top public-navbar"
       style={{
-        background: 'rgba(255,255,255,0.97)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(0,0,0,0.07)',
         padding: '0 0',
         zIndex: 1050,
       }}
@@ -50,32 +49,16 @@ export default function Navbar() {
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {/* Logo icon */}
-          <div
-            style={{
-              width: 40, height: 40,
-              background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
-              borderRadius: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
+          <div className="public-logo-mark">
             <Cross size={20} color="#fff" strokeWidth={2.5} />
           </div>
 
           {/* Brand text */}
           <div style={{ lineHeight: 1.15 }}>
-            <div
-              style={{
-                fontWeight: 800, fontSize: '1.1rem',
-                background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                letterSpacing: '-0.3px',
-              }}
-            >
+            <div className="public-brand-name">
               MediCare
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#6c757d', fontWeight: 500, letterSpacing: '0.3px' }}>
+            <div className="public-brand-sub">
               HOSPITAL MANAGEMENT
             </div>
           </div>
@@ -83,20 +66,15 @@ export default function Navbar() {
 
         {/* ─── Hotline (hidden on mobile) ─── */}
         <div
-          className="d-none d-xl-flex align-items-center gap-2 ms-auto me-4"
-          style={{ fontSize: '0.8rem', color: '#6c757d' }}
+          className="d-none d-xl-flex align-items-center gap-2 ms-auto me-4 hotline-block"
+          style={{ fontSize: '0.8rem', color: '#444444' }}
         >
-          <div
-            style={{
-              width: 30, height: 30, borderRadius: '50%',
-              background: '#e8f1fd', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-          >
-            <Phone size={14} color="#1a6fdb" />
+          <div className="hotline-icon">
+            <Phone size={14} color="var(--color-primary-blue)" />
           </div>
           <div>
-            <div style={{ fontSize: '0.67rem', color: '#9ca3af' }}>Hotline 24/7</div>
-            <div style={{ fontWeight: 700, color: '#1a6fdb', fontSize: '0.85rem' }}>1900 6868</div>
+            <div className="mono-label" style={{ color: '#444444' }}>Hotline 24/7</div>
+            <div style={{ fontWeight: 500, color: 'var(--color-primary-blue)', fontSize: '0.95rem' }}>1900 6868</div>
           </div>
         </div>
 
@@ -112,11 +90,11 @@ export default function Navbar() {
           aria-label="Toggle navigation"
           style={{
             padding: '6px 10px',
-            background: '#f0f4ff',
+            background: '#ffffff',
             borderRadius: 8,
           }}
         >
-          <Menu size={20} color="#1a6fdb" />
+          <Menu size={20} color="var(--color-primary-blue)" />
         </button>
 
         {/* ─── Collapsible Menu ─── */}
@@ -125,7 +103,7 @@ export default function Navbar() {
           className="collapse navbar-collapse"
         >
           {/* Nav Links */}
-          <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 nav-pill">
             {NAV_LINKS.map((link) => (
               <li key={link.to} className="nav-item">
                 <NavLink
@@ -134,10 +112,10 @@ export default function Navbar() {
                   end={link.to === '/'}
                   className="nav-link px-3 py-2 rounded-2 fw-500"
                   style={({ isActive }) => ({
-                    fontSize: '0.875rem',
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#1a6fdb' : '#374151',
-                    background: isActive ? '#e8f1fd' : 'transparent',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    color: isActive ? '#ffffff' : '#444444',
+                    background: isActive ? 'var(--color-primary-blue)' : 'transparent',
                     transition: 'all 0.18s ease',
                   })}
                 >
@@ -151,8 +129,8 @@ export default function Navbar() {
           <div className="d-flex align-items-center gap-2 flex-column flex-lg-row mt-3 mt-lg-0">
             {/* Hotline on mobile */}
             <div className="d-flex d-xl-none align-items-center gap-2 mb-2 mb-lg-0">
-              <Phone size={14} color="#1a6fdb" />
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1a6fdb' }}>
+              <Phone size={14} color="var(--color-primary-blue)" />
+              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-primary-blue)' }}>
                 Hotline: 1900 6868
               </span>
             </div>
@@ -161,16 +139,18 @@ export default function Navbar() {
             {isAuthenticated ? (
               <div className="d-flex align-items-center gap-2">
                 <Link
-                  to="/admin"
-                  className="btn btn-light d-flex align-items-center gap-2 border"
+                  to={homeFor(user)}
+                  className="btn btn-light d-flex align-items-center gap-2"
                   style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 600,
+                    fontSize: '1rem',
+                    fontWeight: 500,
                     borderRadius: 8,
-                    padding: '8px 16px',
+                    padding: '12px 20px',
+                    background: '#ffffff',
+                    border: 'none',
                   }}
                 >
-                  <LayoutDashboard size={16} color="#1a6fdb" />
+                  <LayoutDashboard size={16} color="var(--color-primary-blue)" />
                   <span>{user?.username || user?.fullName || 'Quản trị'}</span>
                 </Link>
                 <button
@@ -178,10 +158,10 @@ export default function Navbar() {
                   onClick={handleLogout}
                   className="btn btn-outline-danger d-flex align-items-center gap-2"
                   style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 600,
+                    fontSize: '1rem',
+                    fontWeight: 500,
                     borderRadius: 8,
-                    padding: '8px 14px',
+                    padding: '12px 18px',
                   }}
                   title="Đăng xuất"
                 >
@@ -195,25 +175,25 @@ export default function Navbar() {
                 to="/login"
                 className="btn d-flex align-items-center gap-2"
                 style={{
-                  background: 'linear-gradient(135deg, #1a6fdb, #1355b0)',
+                  background: 'var(--color-primary-blue)',
                   color: '#fff',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  padding: '8px 20px',
+                  fontWeight: 500,
+                  fontSize: '1rem',
+                  padding: '12px 24px',
                   borderRadius: 8,
                   border: 'none',
                   textDecoration: 'none',
                   whiteSpace: 'nowrap',
-                  boxShadow: '0 4px 12px rgba(26,111,219,0.3)',
+                  boxShadow: 'none',
                   transition: 'all 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 6px 18px rgba(26,111,219,0.4)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,111,219,0.3)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 <LogIn size={16} />

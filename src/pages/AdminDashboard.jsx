@@ -38,7 +38,7 @@ export default function AdminDashboard() {
       value: stats?.totalEquipment || 0,
       sub: `${stats?.activeEquipment || 0} đang hoạt động`,
       icon: <Wrench size={24} />,
-      bgClass: 'bg-primary',
+      bgClass: 'primary',
       textClass: 'text-primary'
     },
     {
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
       value: stats?.maintenanceEquipment || 0,
       sub: 'Cần kiểm tra kỹ thuật',
       icon: <AlertTriangle size={24} />,
-      bgClass: 'bg-warning',
+      bgClass: 'warning',
       textClass: 'text-warning'
     },
     {
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
       value: stats?.availableRooms || 0,
       sub: `Trên tổng số ${stats?.totalRooms || 0} phòng`,
       icon: <Stethoscope size={24} />,
-      bgClass: 'bg-success',
+      bgClass: 'success',
       textClass: 'text-success'
     },
     {
@@ -62,7 +62,7 @@ export default function AdminDashboard() {
       value: stats?.totalBookings || 0,
       sub: `${stats?.pendingBookings || 0} lịch hẹn chờ duyệt`,
       icon: <Calendar size={24} />,
-      bgClass: 'bg-info',
+      bgClass: 'danger',
       textClass: 'text-info'
     }
   ];
@@ -71,24 +71,24 @@ export default function AdminDashboard() {
     <div className="container-fluid py-4">
       {/* Title Header */}
       <div className="mb-4">
-        <h3 className="fw-bold text-dark mb-1">Dashboard Thống Kê Quản Trị</h3>
-        <p className="text-muted fs-7 mb-0">Tổng quan tình hình hoạt động thiết bị và đặt lịch khám trong bệnh viện</p>
+        <h3 className="heading-title mb-1" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', color: 'var(--color-carbon-black)' }}>Dashboard Thống Kê Quản Trị</h3>
+        <p className="fs-7 mb-0" style={{ fontSize: 16, color: 'var(--color-slate)' }}>Tổng quan tình hình hoạt động thiết bị và đặt lịch khám trong bệnh viện</p>
       </div>
 
       {/* 1. Thống kê tổng quan (4 Stats Cards dạng Bootstrap Grid Responsive) */}
       <div className="row g-3 mb-4">
         {statCards.map((card, idx) => (
           <div key={idx} className="col-12 col-sm-6 col-xl-3">
-            <div className="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
-              <div className="card-body p-4">
+            <div className="stat-card h-100">
+              <div>
                 <div className="d-flex align-items-center justify-content-between mb-3">
-                  <span className="text-muted fw-semibold fs-7">{card.title}</span>
-                  <div className={`p-3 rounded-3 ${card.bgClass} bg-opacity-10 ${card.textClass}`}>
+                  <span className="mono-label" style={{ color: 'var(--color-slate)', textTransform: 'uppercase' }}>{card.title}</span>
+                  <div className={`stat-card-icon ${card.bgClass}`} style={{ marginBottom: 0 }}>
                     {card.icon}
                   </div>
                 </div>
-                <h2 className="fw-extrabold text-dark mb-1">{card.value}</h2>
-                <div className="fs-7 text-muted fw-medium">{card.sub}</div>
+                <h2 className="stat-card-value mb-1">{card.value}</h2>
+                <div className="fs-7" style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-slate)' }}>{card.sub}</div>
               </div>
             </div>
           </div>
@@ -99,17 +99,17 @@ export default function AdminDashboard() {
       <div className="row g-4">
         {/* Lịch hẹn gần đây */}
         <div className="col-12 col-lg-7">
-          <div className="card border-0 shadow-sm rounded-4 h-100">
-            <div className="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center">
-              <h5 className="fw-bold mb-0 text-dark">Lịch Hẹn Khám Gần Đây</h5>
-              <span className="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill">
+          <div className="card-custom h-100">
+            <div className="card-custom-header" style={{ borderBottom: 0 }}>
+              <h5 className="heading-title mb-0" style={{ fontSize: 18, fontWeight: 450 }}>Lịch Hẹn Khám Gần Đây</h5>
+              <span className="mint-tag" style={{ padding: '4px 12px' }}>
                 Cập nhật tự động
               </span>
             </div>
             <div className="card-body p-0">
               <div className="table-responsive">
-                <table className="table table-hover align-middle mb-0">
-                  <thead className="table-light fs-7 text-uppercase text-secondary">
+                <table className="table-custom align-middle mb-0">
+                  <thead className="fs-7 text-uppercase">
                     <tr>
                       <th className="ps-4">Bệnh nhân</th>
                       <th>Ngày & Giờ</th>
@@ -121,29 +121,29 @@ export default function AdminDashboard() {
                     {bookings.map((b) => (
                       <tr key={b.id}>
                         <td className="ps-4">
-                          <div className="fw-bold text-dark">{b.patientName}</div>
-                          <div className="fs-7 text-muted">{b.phone}</div>
+                          <div style={{ fontWeight: 500, color: 'var(--color-carbon-black)' }}>{b.patientName}</div>
+                          <div className="mono-label" style={{ color: 'var(--color-smoke)' }}>{b.phone}</div>
                         </td>
                         <td>
-                          <div className="fw-semibold text-dark">{b.date}</div>
-                          <div className="fs-7 text-primary d-flex align-items-center gap-1">
+                          <div style={{ fontWeight: 500, color: 'var(--color-carbon-black)' }}>{b.date}</div>
+                          <div className="mono-label d-flex align-items-center gap-1" style={{ color: 'var(--color-slate)' }}>
                             <Clock size={12} /> {b.time}
                           </div>
                         </td>
                         <td className="fs-7 fw-medium">{b.room}</td>
                         <td>
                           {b.status === 'Confirmed' && (
-                            <span className="badge bg-success-subtle text-success px-2 py-1 rounded-2">
+                            <span className="badge-custom badge-confirmed">
                               <CheckCircle size={12} className="me-1" /> Đã xác nhận
                             </span>
                           )}
                           {b.status === 'Pending' && (
-                            <span className="badge bg-warning-subtle text-warning px-2 py-1 rounded-2">
+                            <span className="badge-custom badge-pending">
                               <Clock size={12} className="me-1" /> Chờ duyệt
                             </span>
                           )}
                           {b.status === 'Cancelled' && (
-                            <span className="badge bg-danger-subtle text-danger px-2 py-1 rounded-2">
+                            <span className="badge-custom badge-cancelled">
                               <XCircle size={12} className="me-1" /> Đã hủy
                             </span>
                           )}
@@ -159,23 +159,23 @@ export default function AdminDashboard() {
 
         {/* Trạng thái thiết bị y tế */}
         <div className="col-12 col-lg-5">
-          <div className="card border-0 shadow-sm rounded-4 h-100">
-            <div className="card-header bg-white py-3 px-4 border-0">
-              <h5 className="fw-bold mb-0 text-dark">Thiết Bị Cần Lưu Ý</h5>
+          <div className="card-custom h-100">
+            <div className="card-custom-header" style={{ borderBottom: 0 }}>
+              <h5 className="heading-title mb-0" style={{ fontSize: 18, fontWeight: 450 }}>Thiết Bị Cần Lưu Ý</h5>
             </div>
             <div className="card-body px-4 pt-0">
               <div className="list-group list-group-flush">
                 {equipments.map((eq) => (
                   <div key={eq.id} className="list-group-item px-0 py-3 d-flex align-items-center justify-content-between border-bottom">
                     <div>
-                      <div className="fw-bold text-dark">{eq.name}</div>
-                      <div className="fs-7 text-muted">Mã: <code>{eq.code}</code> | Vị trí: {eq.room}</div>
+                      <div style={{ fontWeight: 500, color: 'var(--color-carbon-black)' }}>{eq.name}</div>
+                      <div className="fs-7" style={{ fontSize: 14, color: 'var(--color-slate)' }}>Mã: <code className="mono-label" style={{ color: 'var(--color-carbon-black)' }}>{eq.code}</code> | Vị trí: {eq.room}</div>
                     </div>
                     <div>
                       {eq.status === 'Active' ? (
-                        <span className="badge bg-success-subtle text-success">Hoạt động</span>
+                        <span className="badge-custom badge-active">Hoạt động</span>
                       ) : (
-                        <span className="badge bg-warning-subtle text-warning">Đang bảo trì</span>
+                        <span className="badge-custom badge-maintenance">Đang bảo trì</span>
                       )}
                     </div>
                   </div>

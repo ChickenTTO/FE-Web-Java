@@ -1,5 +1,4 @@
-// src/components/Sidebar.jsx
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   CalendarPlus,
@@ -10,97 +9,137 @@ import {
   HelpCircle,
   LogOut,
   Cross,
-} from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-
-const navItems = [
-  { label: 'Tổng quan', to: '/', icon: <Home size={18} />, section: 'Trang chính' },
-  { label: 'Đặt lịch khám', to: '/booking', icon: <CalendarPlus size={18} />, section: 'Trang chính' },
-  { label: 'Dashboard Admin', to: '/admin', icon: <LayoutDashboard size={18} />, section: 'Quản trị' },
-  { label: 'Thiết bị y tế', to: '/equipment', icon: <Wrench size={18} />, section: 'Quản trị' },
+  CalendarDays,
+  ClipboardList,
+  Stethoscope,
+  Package,
+  Layers,
+  Truck,
+  Receipt,
+  ShieldCheck,
+  Monitor,
+  HeartPulse,
+  X,
+} from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { roleOf } from "../services/clinicStore";
+const A = ["ADMIN"],
+  AS = ["ADMIN", "STAFF"],
+  ALL = ["ADMIN", "STAFF", "DOCTOR", "PATIENT"];
+export const workspaceNav = [
+  ["Chăm sóc", "Trang chủ", "/", Home, ALL],
+  ["Chăm sóc", "Đặt lịch khám", "/booking", CalendarPlus, ["PATIENT", "STAFF"]],
+  ["Chăm sóc", "Hồ sơ của tôi", "/profiles", Users, ["PATIENT"]],
+  [
+    "Chăm sóc",
+    "Lịch hẹn của tôi",
+    "/my-appointments",
+    CalendarDays,
+    ["PATIENT"],
+  ],
+  ["Phòng khám", "Tổng quan", "/admin", LayoutDashboard, A],
+  ["Phòng khám", "Lịch hẹn & Tiếp nhận", "/appointments", CalendarDays, AS],
+  ["Phòng khám", "Khám bệnh", "/consultations", Stethoscope, ["DOCTOR"]],
+  ["Phòng khám", "Hồ sơ bệnh nhân", "/patients", Users, AS],
+  [
+    "Phòng khám",
+    "Lịch trực bác sĩ",
+    "/schedules",
+    CalendarDays,
+    ["ADMIN", "STAFF", "DOCTOR"],
+  ],
+  [
+    "Phòng khám",
+    "Thanh toán",
+    "/payments",
+    Receipt,
+    ["ADMIN", "STAFF", "PATIENT"],
+  ],
+  ["Phòng khám", "Báo cáo doanh thu", "/reports", LayoutDashboard, A],
+  ["Danh mục", "Chuyên khoa", "/catalog/specialties", HeartPulse, AS],
+  ["Danh mục", "Phòng khám", "/catalog/rooms", Home, AS],
+  ["Danh mục", "Bác sĩ", "/catalog/doctors", Stethoscope, AS],
+  ["Danh mục", "Dịch vụ y tế", "/catalog/services", ClipboardList, AS],
+  ["Danh mục", "Khung giờ", "/catalog/timeSlots", CalendarDays, AS],
+  ["Danh mục", "Thiết bị y tế", "/equipment", Wrench, AS],
+  [
+    "Kho vật tư",
+    "Tồn kho",
+    "/inventory",
+    Package,
+    ["ADMIN", "STAFF", "DOCTOR"],
+  ],
+  ["Kho vật tư", "Lô hàng & Hạn dùng", "/inventory/batches", Layers, AS],
+  ["Kho vật tư", "Thẻ kho", "/inventory/transactions", ClipboardList, AS],
+  ["Kho vật tư", "Danh mục vật tư", "/inventory/supplies", Package, AS],
+  ["Kho vật tư", "Nhóm vật tư", "/inventory/categories", Layers, AS],
+  ["Kho vật tư", "Nhà cung cấp", "/inventory/suppliers", Truck, AS],
+  ["Kho vật tư", "Định mức tiêu hao", "/inventory/norms", ClipboardList, A],
+  ["Hệ thống", "Người dùng", "/users", Users, A],
+  ["Hệ thống", "Nhật ký bảo mật", "/audit-logs", ShieldCheck, A],
+  ["Hệ thống", "Thiết bị đăng nhập", "/sessions", Monitor, ALL],
+  ["Hệ thống", "Tài khoản & Cài đặt", "/settings", Settings, ALL],
+  ["Hệ thống", "Hướng dẫn", "/help", HelpCircle, ALL],
 ];
-
-const sections = ['Trang chính', 'Quản trị'];
-
-function Sidebar() {
-  const { logout } = useAuth();
+export default function Sidebar({ open, onClose }) {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (e) {
-      console.error('Logout error:', e);
-    }
-  };
-
+  const items = workspaceNav.filter((i) => i[4].includes(roleOf(user)));
   return (
-    <aside className="app-sidebar">
-      {/* Logo */}
+    <aside className={`app-sidebar${open ? " open" : ""}`}>
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">
           <Cross size={20} />
         </div>
         <div>
           <div className="sidebar-logo-text">MediCare</div>
-          <div className="sidebar-logo-sub">Hospital Management</div>
+          <div className="sidebar-logo-sub">CLINIC WORKSPACE</div>
         </div>
+        <button
+          className="clinic-mobile-close"
+          aria-label="Đóng menu"
+          onClick={onClose}
+        >
+          <X size={20} />
+        </button>
       </div>
-
-      {/* Navigation */}
       <nav className="sidebar-nav">
-        {sections.map((section) => (
+        {[...new Set(items.map((i) => i[0]))].map((section) => (
           <div key={section}>
             <div className="sidebar-section-label">{section}</div>
-            {navItems
-              .filter((item) => item.section === section)
-              .map((item) => (
+            {items
+              .filter((i) => i[0] === section)
+              .map(([, label, to, Icon]) => (
                 <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.to === '/'}
+                  key={to}
+                  to={to}
+                  end
+                  onClick={onClose}
                   className={({ isActive }) =>
-                    `sidebar-nav-item${isActive ? ' active' : ''}`
+                    `sidebar-nav-item${isActive ? " active" : ""}`
                   }
                 >
-                  <span className="nav-icon">{item.icon}</span>
-                  <span>{item.label}</span>
+                  <span className="nav-icon">
+                    <Icon size={18} />
+                  </span>
+                  <span>{label}</span>
                 </NavLink>
               ))}
           </div>
         ))}
-
-        <div className="divider" style={{ borderColor: 'rgba(255,255,255,0.08)', margin: '1rem 0' }} />
-
-        <div className="sidebar-section-label">Hệ thống</div>
-        <button className="sidebar-nav-item">
-          <span className="nav-icon"><Users size={18} /></span>
-          <span>Người dùng</span>
-        </button>
-        <button className="sidebar-nav-item">
-          <span className="nav-icon"><Settings size={18} /></span>
-          <span>Cài đặt</span>
-        </button>
-        <button className="sidebar-nav-item">
-          <span className="nav-icon"><HelpCircle size={18} /></span>
-          <span>Hỗ trợ</span>
-        </button>
       </nav>
-
-      {/* Footer */}
       <div className="sidebar-footer">
         <button
-          onClick={handleLogout}
-          className="sidebar-nav-item"
-          style={{ color: '#ff6b6b', background: 'transparent', border: 'none', width: '100%', textAlign: 'left' }}
+          className="sidebar-nav-item w-100"
+          onClick={async () => {
+            await logout();
+            navigate("/login");
+          }}
         >
-          <span className="nav-icon"><LogOut size={18} /></span>
+          <LogOut size={18} />
           <span>Đăng xuất</span>
         </button>
       </div>
     </aside>
   );
 }
-
-export default Sidebar;

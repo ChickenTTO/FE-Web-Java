@@ -81,9 +81,9 @@ function getErrors(data, todayStr) {
 function Field({ id, label, icon: Icon, required, hint, error, children }) {
   return (
     <>
-      <label htmlFor={id} className="form-label fw-semibold text-secondary">
+      <label htmlFor={id} className="form-label text-secondary">
         <Icon size={15} className="me-1" /> {label}{' '}
-        {required && <span className="text-danger">*</span>}
+        {required && <span style={{ color: 'var(--color-primary-blue)' }}>*</span>}
         {hint && <span className="text-muted small fw-normal">{hint}</span>}
       </label>
       {children}
@@ -242,10 +242,10 @@ export default function BookingPage() {
     <div className="container py-5 booking-page">
       {/* Header */}
       <div className="text-center mb-4">
-        <span className="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill mb-2">
+        <span className="mint-tag mb-3">
           Dịch vụ khám bệnh
         </span>
-        <h1 className="h2 fw-bold text-dark">ĐĂNG KÝ ĐẶT LỊCH KHÁM BỆNH</h1>
+        <h1 className="display-title mb-3" style={{ fontSize: 'clamp(3rem, 7vw, 5rem)', color: 'var(--color-primary-blue)' }}>ĐĂNG KÝ ĐẶT LỊCH KHÁM BỆNH</h1>
         <p className="text-muted mb-0">
           Điền thông tin bên dưới để đăng ký lịch khám trực tuyến nhanh chóng – chỉ mất chưa đến 1 phút.
         </p>
@@ -254,14 +254,14 @@ export default function BookingPage() {
       <div className="row g-4 justify-content-center">
         {/* ───────── Form ───────── */}
         <div className="col-12 col-lg-8">
-          <div className="card border-0 shadow-lg rounded-4 overflow-hidden">
-            <div className="card-header bg-primary text-white p-4 pb-3">
+          <div className="card border-0 overflow-hidden" style={{ borderRadius: 32, boxShadow: 'none' }}>
+            <div className="card-header text-white p-4 pb-3" style={{ background: 'var(--color-primary-blue)', border: 0, borderRadius: 0 }}>
               <div className="d-flex align-items-center justify-content-between gap-2 mb-3">
                 <div className="d-flex align-items-center gap-2">
                   <Calendar size={22} />
-                  <h2 className="h5 mb-0 fw-bold">Thông Tin Phiếu Đặt Lịch</h2>
+                  <h2 className="heading-title mb-0" style={{ fontSize: 20, lineHeight: 1.1 }}>Thông Tin Phiếu Đặt Lịch</h2>
                 </div>
-                <span className="small fw-semibold opacity-75">{completed}/{REQUIRED_FIELDS.length} mục</span>
+                <span className="mono-label" style={{ color: '#ffffff' }}>{completed}/{REQUIRED_FIELDS.length} mục</span>
               </div>
               <div
                 className="bk-progress"
@@ -356,13 +356,13 @@ export default function BookingPage() {
                             <div className="bk-doctor-card">
                               <div className="bk-doctor-avatar">{selectedRoom.doctor.split(' ').pop()[0]}</div>
                               <div className="flex-grow-1 min-w-0">
-                                <div className="fw-bold text-dark text-truncate">{selectedRoom.doctor}</div>
+                                <div className="fw-bold text-truncate" style={{ color: 'var(--color-primary-blue)' }}>{selectedRoom.doctor}</div>
                                 <div className="small text-muted">
                                   Bác sĩ phụ trách · Chuyên khoa {selectedRoom.specialty}
                                 </div>
                               </div>
                               {selectedRoom.floor && (
-                                <div className="small text-primary fw-semibold d-none d-sm-flex align-items-center gap-1">
+                                <div className="mono-label d-none d-sm-flex align-items-center gap-1" style={{ color: 'var(--color-primary-blue)' }}>
                                   <MapPin size={14} /> {selectedRoom.floor}
                                 </div>
                               )}
@@ -468,7 +468,8 @@ export default function BookingPage() {
                 <div className="mt-4 pt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg w-100 py-3 fw-bold rounded-3 shadow-sm bk-submit"
+                    className="btn btn-primary btn-lg w-100 py-3 fw-medium bk-submit"
+                    style={{ borderRadius: 8, boxShadow: 'none' }}
                     disabled={submitting}
                   >
                     {submitting ? (
@@ -492,7 +493,7 @@ export default function BookingPage() {
         {/* ───────── Tóm tắt (sticky trên desktop) ───────── */}
         <aside className="col-12 col-lg-4" aria-label="Tóm tắt phiếu đặt lịch">
           <div className="bk-summary">
-            <h2 className="h6 fw-bold text-dark mb-3">Tóm tắt lịch khám</h2>
+            <h2 className="heading-title mb-3" style={{ fontSize: 16, color: 'var(--color-primary-blue)' }}>Tóm tắt lịch khám</h2>
             <SummaryRow icon={User} label="Bệnh nhân" value={formData.patientName.trim()} />
             <SummaryRow icon={Phone} label="Số điện thoại" value={formData.phone} />
             <SummaryRow icon={Stethoscope} label="Phòng khám" value={formData.room} />
@@ -501,7 +502,7 @@ export default function BookingPage() {
             <SummaryRow icon={Clock} label="Giờ khám" value={formData.time} />
             <div className="bk-summary-foot">
               {progress === 100
-                ? <span className="text-success fw-semibold d-flex align-items-center gap-1"><CheckCircle2 size={15} /> Sẵn sàng xác nhận</span>
+                ? <span className="mint-tag"><CheckCircle2 size={15} /> Sẵn sàng xác nhận</span>
                 : <span className="text-muted">Hoàn thành {progress}% phiếu đăng ký</span>}
             </div>
           </div>
@@ -520,33 +521,33 @@ export default function BookingPage() {
           onMouseDown={(e) => e.target === e.currentTarget && closeModal()}
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <div className="modal-content border-0 overflow-hidden" style={{ borderRadius: 32, boxShadow: 'none' }}>
               <div className="modal-body p-4 text-center">
                 <div className="bk-success-icon mb-3">
                   <CheckCircle2 size={64} />
                 </div>
-                <h2 id="bk-success-title" className="h4 fw-bold text-dark mb-2">ĐẶT LỊCH KHÁM THÀNH CÔNG!</h2>
+                <h2 id="bk-success-title" className="heading-title mb-2" style={{ fontSize: 28, lineHeight: 1.1, color: 'var(--color-primary-blue)' }}>ĐẶT LỊCH KHÁM THÀNH CÔNG!</h2>
                 <p className="text-muted mb-4">
                   Mã phiếu khám của bạn đã được ghi nhận trên hệ thống. Nhân viên tư vấn sẽ liên hệ xác nhận qua SĐT sớm nhất.
                 </p>
 
                 {createdBooking && (
-                  <div className="bg-light p-3 rounded-3 text-start mb-4 border">
+                  <div className="p-3 text-start mb-4" style={{ background: '#f3f3f3', borderRadius: 16, border: 0 }}>
                     <div className="d-flex justify-content-between mb-2">
                       <span className="text-muted">Họ bệnh nhân:</span>
-                      <strong className="text-dark">{createdBooking.patientName}</strong>
+                      <strong style={{ color: 'var(--color-primary-blue)' }}>{createdBooking.patientName}</strong>
                     </div>
                     <div className="d-flex justify-content-between mb-2">
                       <span className="text-muted">Số điện thoại:</span>
-                      <strong className="text-dark">{createdBooking.phone}</strong>
+                      <strong style={{ color: 'var(--color-primary-blue)' }}>{createdBooking.phone}</strong>
                     </div>
                     <div className="d-flex justify-content-between mb-2">
                       <span className="text-muted">Phòng khám:</span>
-                      <strong className="text-primary">{createdBooking.room}</strong>
+                      <strong style={{ color: 'var(--color-primary-blue)' }}>{createdBooking.room}</strong>
                     </div>
                     <div className="d-flex justify-content-between">
                       <span className="text-muted">Thời gian:</span>
-                      <strong className="text-danger">
+                      <strong style={{ color: 'var(--color-primary-blue)' }}>
                         {createdBooking.time} - {formatDateVN(createdBooking.date)}
                       </strong>
                     </div>
@@ -554,12 +555,13 @@ export default function BookingPage() {
                 )}
 
                 <div className="d-flex gap-2">
-                  <Link to="/" className="btn btn-outline-primary w-100 py-2 fw-bold rounded-3">
+                  <Link to="/" className="btn btn-outline-primary w-100 py-2 fw-medium" style={{ borderRadius: 4 }}>
                     Về trang chủ
                   </Link>
                   <button
                     type="button"
-                    className="btn btn-primary w-100 py-2 fw-bold rounded-3"
+                    className="btn btn-primary w-100 py-2 fw-medium"
+                    style={{ borderRadius: 8 }}
                     onClick={closeModal}
                     autoFocus
                   >
