@@ -27,7 +27,7 @@ export const authService = {
     // Trích xuất thông tin user từ response (nếu backend trả về)
     const userData = data?.user || data?.data?.user || data?.data || {
       username: identifier,
-      role: data?.role || 'ADMIN',
+      role: data?.role || 'PATIENT',
     };
 
     // Lưu thông tin người dùng cơ bản vào localStorage (không lưu token vì đã có trong cookie)

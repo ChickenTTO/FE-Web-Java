@@ -46,14 +46,14 @@ const SPECIALTY_ICONS = {
 };
 
 const SPECIALTY_COLORS = [
-  { bg: '#e8f4ff', accent: '#1a6fdb' },
-  { bg: '#fff0f3', accent: '#e5383b' },
-  { bg: '#e6f7f3', accent: '#0fa37f' },
-  { bg: '#fff8e8', accent: '#f4a261' },
-  { bg: '#f3e8ff', accent: '#7c3aed' },
-  { bg: '#e8fff6', accent: '#059669' },
-  { bg: '#e8f0ff', accent: '#3b82f6' },
-  { bg: '#fff3e8', accent: '#ea580c' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
+  { bg: '#f3f3f3', accent: 'var(--color-primary-blue)' },
 ];
 
 const EQUIPMENT_LIST = [
@@ -61,63 +61,63 @@ const EQUIPMENT_LIST = [
     icon: <Scan size={32} />,
     title: 'Máy CT Scanner 128 lát',
     desc: 'Chụp cắt lớp vi tính độ phân giải cao, cho kết quả chẩn đoán chính xác nhất.',
-    color: '#1a6fdb',
-    bg: '#e8f1fd',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Chẩn đoán hình ảnh',
   },
   {
     icon: <Radio size={32} />,
     title: 'Máy MRI 3.0 Tesla',
     desc: 'Cộng hưởng từ thế hệ mới, không bức xạ, hình ảnh sắc nét chi tiết đến từng mm.',
-    color: '#0fa37f',
-    bg: '#e6f7f3',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Chẩn đoán hình ảnh',
   },
   {
     icon: <Activity size={32} />,
     title: 'Hệ thống Monitor ICU',
     desc: 'Theo dõi liên tục sinh hiệu bệnh nhân nặng, cảnh báo sớm mọi bất thường.',
-    color: '#7c3aed',
-    bg: '#f3e8ff',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Theo dõi bệnh nhân',
   },
   {
     icon: <Microscope size={32} />,
     title: 'Máy Xét nghiệm tự động',
     desc: 'Phân tích sinh hóa, huyết học tự động cho kết quả nhanh trong 30 phút.',
-    color: '#ea580c',
-    bg: '#fff3e8',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Xét nghiệm',
   },
   {
     icon: <Stethoscope size={32} />,
     title: 'Robot phẫu thuật Da Vinci',
     desc: 'Phẫu thuật xâm lấn tối thiểu với độ chính xác cao, hồi phục nhanh hơn 60%.',
-    color: '#e5383b',
-    bg: '#fdecea',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Phẫu thuật',
   },
   {
     icon: <Heart size={32} />,
     title: 'Siêu âm tim 4D',
     desc: 'Đánh giá chức năng tim mạch toàn diện với công nghệ hình ảnh 4 chiều.',
-    color: '#059669',
-    bg: '#e8fff6',
+    color: 'var(--color-primary-blue)',
+    bg: '#f3f3f3',
     tag: 'Tim mạch',
   },
 ];
 
 const WHY_US = [
-  { icon: <ShieldCheck size={24} />, title: 'Đội ngũ chuyên gia hàng đầu', desc: 'Bác sĩ được đào tạo tại các trung tâm y tế hàng đầu trong và ngoài nước.', color: '#1a6fdb' },
-  { icon: <Zap size={24} />,         title: 'Công nghệ y tế tiên tiến',    desc: 'Hơn 200 thiết bị hiện đại cùng hệ thống HIS quản lý bệnh viện thông minh.', color: '#0fa37f' },
-  { icon: <Clock size={24} />,        title: 'Phục vụ 24/7 không nghỉ',     desc: 'Khoa cấp cứu, ICU và đội ngũ trực hoạt động 24 giờ mỗi ngày, 7 ngày mỗi tuần.', color: '#7c3aed' },
-  { icon: <Star size={24} />,         title: 'Trải nghiệm bệnh nhân tốt nhất', desc: 'Môi trường thân thiện, quy trình khám nhanh gọn, đặt lịch trực tuyến tiện lợi.', color: '#f4a261' },
+  { icon: <ShieldCheck size={24} />, title: 'Đội ngũ chuyên gia hàng đầu', desc: 'Bác sĩ được đào tạo tại các trung tâm y tế hàng đầu trong và ngoài nước.', color: 'var(--color-primary-blue)' },
+  { icon: <Zap size={24} />,         title: 'Công nghệ y tế tiên tiến',    desc: 'Hơn 200 thiết bị hiện đại cùng hệ thống HIS quản lý bệnh viện thông minh.', color: 'var(--color-primary-blue)' },
+  { icon: <Clock size={24} />,        title: 'Phục vụ 24/7 không nghỉ',     desc: 'Khoa cấp cứu, ICU và đội ngũ trực hoạt động 24 giờ mỗi ngày, 7 ngày mỗi tuần.', color: 'var(--color-primary-blue)' },
+  { icon: <Star size={24} />,         title: 'Trải nghiệm bệnh nhân tốt nhất', desc: 'Môi trường thân thiện, quy trình khám nhanh gọn, đặt lịch trực tuyến tiện lợi.', color: 'var(--color-primary-blue)' },
 ];
 
 const STATUS_MAP = {
-  Available: { label: 'Còn chỗ',   cls: 'text-success',  dot: '#0fa37f' },
-  Busy:      { label: 'Đang khám', cls: 'text-danger',   dot: '#e5383b' },
-  Closed:    { label: 'Đóng cửa',  cls: 'text-secondary',dot: '#9ca3af' },
+  Available: { label: 'Còn chỗ',   cls: 'text-success',  dot: 'var(--color-primary-blue)' },
+  Busy:      { label: 'Đang khám', cls: 'text-danger',   dot: '#ffffff' },
+  Closed:    { label: 'Đóng cửa',  cls: 'text-secondary',dot: '#444444' },
 };
 
 /* ─────────────────────────────────────────────────────────────
@@ -131,25 +131,26 @@ function SectionHeader({ badge, title, subtitle, center = true }) {
         <span
           className="badge mb-3 px-3 py-2"
           style={{
-            background: '#e8f1fd', color: '#1a6fdb',
-            fontSize: '0.75rem', fontWeight: 700,
-            borderRadius: 100, letterSpacing: '0.5px',
+            background: '#d1ffca', color: 'var(--color-primary-blue)',
+            fontFamily: 'var(--font-suisseintlmono)',
+            fontSize: '0.75rem', fontWeight: 400,
+            borderRadius: 64, letterSpacing: '-0.03em',
           }}
         >
           {badge}
         </span>
       )}
       <h2
+        className="display-title"
         style={{
-          fontSize: 'clamp(1.5rem, 3vw, 2.1rem)',
-          fontWeight: 800, color: '#0d1b2a',
-          letterSpacing: '-0.5px', lineHeight: 1.25,
+          fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+          color: 'var(--color-primary-blue)',
         }}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-2" style={{ color: '#6c757d', fontSize: '0.95rem', maxWidth: 560, margin: '0.5rem auto 0' }}>
+        <p className="mt-2" style={{ color: '#444444', fontSize: '1rem', maxWidth: 560, margin: '1rem auto 0' }}>
           {subtitle}
         </p>
       )}
@@ -166,7 +167,7 @@ function HeroSection() {
     <section
       id="hero"
       style={{
-        background: 'linear-gradient(135deg, #0a1628 0%, #0d2444 40%, #0f3460 70%, #1a6fdb 100%)',
+        background: '#e5e5e5',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
@@ -174,26 +175,6 @@ function HeroSection() {
         overflow: 'hidden',
       }}
     >
-      {/* Decorative blobs */}
-      <div style={{
-        position: 'absolute', top: '-100px', right: '-100px',
-        width: 400, height: 400, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(26,111,219,0.3) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '-80px', left: '10%',
-        width: 300, height: 300, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(15,163,127,0.25) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      {/* Grid overlay */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
-        backgroundSize: '60px 60px',
-        pointerEvents: 'none',
-      }} />
 
       <div className="container py-5 position-relative">
         <div className="row align-items-center g-5">
@@ -202,41 +183,29 @@ function HeroSection() {
           <div className="col-12 col-lg-6 hero-stagger">
             {/* Badge */}
             <div
-              className="d-inline-flex align-items-center gap-2 mb-4"
-              style={{
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                borderRadius: 100, padding: '6px 16px',
-                fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600,
-              }}
+              className="d-inline-flex align-items-center gap-2 mb-4 mint-tag"
             >
-              <span style={{ width: 8, height: 8, background: '#0fa37f', borderRadius: '50%', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+              <span style={{ width: 8, height: 8, background: 'var(--color-primary-blue)', borderRadius: '50%', display: 'inline-block', animation: 'pulse 2s infinite' }} />
               Hệ thống bệnh viện thông minh – Mở cửa 24/7
             </div>
 
             <h1
+              className="display-title"
               style={{
-                fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-                fontWeight: 900, color: '#fff',
-                lineHeight: 1.15, letterSpacing: '-1px',
+                fontSize: 'clamp(3rem, 7vw, 5rem)',
+                color: 'var(--color-primary-blue)',
               }}
             >
               Chăm sóc sức khoẻ{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #4cc9f0, #0fa37f)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
+              <span>
                 toàn diện
               </span>
               <br />cho gia đình bạn
             </h1>
 
             <p
-              className="mt-3 mb-4"
-              style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 480 }}
+              className="mt-4 mb-4"
+              style={{ color: '#444444', fontSize: '1.125rem', lineHeight: 1.33, maxWidth: 480 }}
             >
               MediCare cung cấp dịch vụ y tế chất lượng cao với đội ngũ bác sĩ chuyên khoa giàu
               kinh nghiệm và hệ thống thiết bị hiện đại hàng đầu Việt Nam.
@@ -249,10 +218,10 @@ function HeroSection() {
                 to="/booking"
                 className="d-flex align-items-center gap-2 btn-cta"
                 style={{
-                  background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
-                  color: '#fff', fontWeight: 700,
-                  fontSize: '0.95rem', padding: '13px 28px',
-                  borderRadius: 10, textDecoration: 'none',
+                  background: 'var(--color-primary-blue)',
+                  color: '#fff', fontWeight: 500,
+                  fontSize: '1rem', padding: '16px 24px',
+                  borderRadius: 8, textDecoration: 'none',
                 }}
               >
                 <CalendarPlus size={18} />
@@ -264,12 +233,11 @@ function HeroSection() {
                 href="tel:19006868"
                 className="d-flex align-items-center gap-2 btn-glass"
                 style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1.5px solid rgba(255,255,255,0.25)',
-                  color: '#fff', fontWeight: 600,
-                  fontSize: '0.95rem', padding: '12px 24px',
-                  borderRadius: 10, textDecoration: 'none',
-                  backdropFilter: 'blur(8px)',
+                  background: '#fff100',
+                  border: '1.5px solid #fff100',
+                  color: 'var(--color-primary-blue)', fontWeight: 500,
+                  fontSize: '1rem', padding: '14.5px 24px',
+                  borderRadius: 8, textDecoration: 'none',
                 }}
               >
                 <Phone size={18} />
@@ -286,10 +254,10 @@ function HeroSection() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="d-flex align-items-center gap-1"
-                  style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.65)', fontWeight: 500 }}
+                  className="d-flex align-items-center gap-1 mono-label"
+                  style={{ color: '#444444' }}
                 >
-                  <CheckCircle size={14} color="#0fa37f" />
+                  <CheckCircle size={14} color="var(--color-primary-blue)" />
                   {item}
                 </div>
               ))}
@@ -304,31 +272,29 @@ function HeroSection() {
               <div style={{
                 position: 'absolute', top: '50%', left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'rgba(255,255,255,0.07)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: 20, padding: '2rem',
+                background: 'var(--color-primary-blue)',
+                borderRadius: 32, padding: '2rem',
                 width: 320, textAlign: 'center',
               }}>
                 <div style={{
-                  width: 80, height: 80, borderRadius: 20,
-                  background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
+                  width: 80, height: 80, borderRadius: 24,
+                  background: '#d1ffca',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 1rem',
                 }}>
-                  <Heart size={36} color="#fff" />
+                  <Heart size={36} color="var(--color-primary-blue)" />
                 </div>
-                <div style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                <div className="heading-title" style={{ color: '#fff', fontSize: '1.25rem', marginBottom: '0.5rem' }}>
                   Chăm sóc toàn diện
                 </div>
-                <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.82rem', lineHeight: 1.6 }}>
+                <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.875rem', lineHeight: 1.3 }}>
                   Từ khám tổng quát đến điều trị chuyên sâu với công nghệ hàng đầu
                 </div>
                 <div className="d-flex justify-content-around mt-3">
                   {[['150+', 'Bác sĩ'], ['30+', 'Chuyên khoa'], ['24/7', 'Hỗ trợ']].map(([v, l]) => (
                     <div key={l} style={{ textAlign: 'center' }}>
-                      <div style={{ color: '#4cc9f0', fontWeight: 800, fontSize: '1.1rem' }}>{v}</div>
-                      <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.72rem' }}>{l}</div>
+                      <div style={{ color: '#ffffff', fontWeight: 450, fontSize: '1.25rem', letterSpacing: '-0.02em' }}>{v}</div>
+                      <div className="mono-label" style={{ color: 'rgba(255,255,255,0.8)' }}>{l}</div>
                     </div>
                   ))}
                 </div>
@@ -337,42 +303,40 @@ function HeroSection() {
               {/* Floating badge – top-left */}
               <div style={{
                 position: 'absolute', top: 30, left: 0,
-                background: '#fff', borderRadius: 14,
+                background: '#fff', borderRadius: 24,
                 padding: '12px 16px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
                 display: 'flex', alignItems: 'center', gap: 10,
                 animation: 'float 3s ease-in-out infinite',
               }}>
                 <div style={{
-                  width: 40, height: 40, borderRadius: 10,
-                  background: '#e8f1fd', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 40, height: 40, borderRadius: 12,
+                  background: '#f3f3f3', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <CalendarPlus size={20} color="#1a6fdb" />
+                  <CalendarPlus size={20} color="var(--color-primary-blue)" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.72rem', color: '#6c757d', fontWeight: 500 }}>Lịch hẹn mới</div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0d1b2a' }}>Nguyễn Văn A · 9:00</div>
+                  <div className="mono-label" style={{ color: '#444444' }}>Lịch hẹn mới</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-primary-blue)' }}>Nguyễn Văn A · 9:00</div>
                 </div>
               </div>
 
               {/* Floating badge – bottom-right */}
               <div style={{
                 position: 'absolute', bottom: 30, right: 0,
-                background: '#fff', borderRadius: 14,
+                background: '#fff', borderRadius: 24,
                 padding: '12px 16px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
                 display: 'flex', alignItems: 'center', gap: 10,
                 animation: 'float 3s ease-in-out infinite 1.5s',
               }}>
                 <div style={{
-                  width: 40, height: 40, borderRadius: 10,
-                  background: '#e6f7f3', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 40, height: 40, borderRadius: 12,
+                  background: '#d1ffca', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Activity size={20} color="#0fa37f" />
+                  <Activity size={20} color="var(--color-primary-blue)" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.72rem', color: '#6c757d', fontWeight: 500 }}>Thiết bị hoạt động</div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0d1b2a' }}>10 / 12 thiết bị ✓</div>
+                  <div className="mono-label" style={{ color: '#444444' }}>Thiết bị hoạt động</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-primary-blue)' }}>10 / 12 thiết bị ✓</div>
                 </div>
               </div>
 
@@ -385,16 +349,16 @@ function HeroSection() {
         <div className="text-center mt-5 d-none d-md-block">
           <div style={{
             display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
-            gap: 8, color: 'rgba(255,255,255,0.4)', fontSize: '0.72rem',
+            gap: 8, color: '#979797',
             animation: 'bounce 2s infinite',
-          }}>
+          }} className="mono-label">
             <div>Cuộn xuống để khám phá</div>
             <div style={{
-              width: 24, height: 40, border: '2px solid rgba(255,255,255,0.25)',
+              width: 24, height: 40, border: '2px solid #979797',
               borderRadius: 12, display: 'flex', justifyContent: 'center', paddingTop: 6,
             }}>
               <div style={{
-                width: 4, height: 8, background: 'rgba(255,255,255,0.5)',
+                width: 4, height: 8, background: '#444444',
                 borderRadius: 2, animation: 'scrollDot 2s infinite',
               }} />
             </div>
@@ -430,28 +394,28 @@ function HeroSection() {
 
 function StatsBar() {
   return (
-    <section style={{ background: '#fff', borderBottom: '1px solid #e9ecef' }}>
+    <section style={{ background: '#e5e5e5', padding: '0 0 5rem' }}>
       <div className="container">
-        <div className="row g-0">
+        <div className="row g-0" style={{ background: '#ffffff', borderRadius: 32, overflow: 'hidden' }}>
           {STATS.map((s, i) => (
             <div
               key={s.label}
               className="col-6 col-md-3"
               style={{
                 padding: '2rem 1.5rem',
-                borderRight: i < 3 ? '1px solid #e9ecef' : 'none',
+                borderRight: i < 3 ? '1px solid #f3f3f3' : 'none',
                 textAlign: 'center',
               }}
             >
               <div style={{
-                width: 52, height: 52, borderRadius: 14,
-                background: '#e8f1fd', color: '#1a6fdb',
+                width: 52, height: 52, borderRadius: 16,
+                background: '#f3f3f3', color: 'var(--color-primary-blue)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 margin: '0 auto 0.75rem',
               }}>
                 {s.icon}
               </div>
-              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 900, color: '#0d1b2a', lineHeight: 1 }}>
+              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 900, color: 'var(--color-primary-blue)', lineHeight: 1 }}>
                 {s.value}
               </div>
               <div style={{ fontSize: '0.82rem', color: '#6c757d', fontWeight: 500, marginTop: '0.25rem' }}>
@@ -489,15 +453,16 @@ function ClinicSection({ rooms }) {
               /* Bootstrap responsive grid: 1 col mobile → 2 col tablet → 3 col desktop */
               <Reveal key={room.id} className="col-12 col-md-6 col-lg-4" delay={(idx % 3) * 80}>
                 <div
-                  className="card h-100 border-0 shadow-sm card-lift"
+                  className="card h-100 border-0 card-lift"
                   style={{
-                    borderRadius: 16,
+                    borderRadius: 32,
                     cursor: 'default',
                     overflow: 'hidden',
+                    boxShadow: 'none',
                   }}
                 >
                   {/* Top accent bar */}
-                  <div style={{ height: 4, background: `linear-gradient(90deg, ${color.accent}, ${color.accent}88)` }} />
+                  <div style={{ height: 4, background: 'var(--color-primary-blue)' }} />
 
                   <div className="card-body p-4">
                     {/* Icon + Status */}
@@ -519,10 +484,10 @@ function ClinicSection({ rooms }) {
                         style={{
                           fontSize: '0.72rem', fontWeight: 600,
                           padding: '4px 10px', borderRadius: 100,
-                          background: room.status === 'Available' ? '#e6f7f3'
-                                    : room.status === 'Busy'      ? '#fdecea'
-                                    : '#f3f4f6',
-                          color: st.dot,
+                          background: room.status === 'Available' ? '#d1ffca'
+                                    : room.status === 'Busy' ? '#fff100'
+                                    : '#c6c6c6',
+                          color: 'var(--color-primary-blue)',
                         }}
                       >
                         <span style={{
@@ -536,7 +501,7 @@ function ClinicSection({ rooms }) {
                     {/* Info */}
                     <h5
                       className="card-title mb-1"
-                      style={{ fontWeight: 700, fontSize: '1rem', color: '#0d1b2a' }}
+                      style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-primary-blue)' }}
                     >
                       {room.name}
                     </h5>
@@ -550,7 +515,7 @@ function ClinicSection({ rooms }) {
                     <div className="d-flex align-items-center gap-2 mb-2">
                       <div style={{
                         width: 32, height: 32, borderRadius: '50%',
-                        background: `linear-gradient(135deg, ${color.accent}, ${color.accent}99)`,
+                        background: `linear-gradient(135deg, ${color.accent}, color-mix(in srgb, ${color.accent} 60%, transparent))`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         color: '#fff', fontWeight: 700, fontSize: '0.75rem', flexShrink: 0,
                       }}>
@@ -577,7 +542,7 @@ function ClinicSection({ rooms }) {
                         style={{
                           '--accent': color.accent,
                           '--accent-bg': color.bg,
-                          border: `1.5px solid ${color.accent}33`,
+                          border: `1.5px solid color-mix(in srgb, ${color.accent} 20%, transparent)`,
                           fontWeight: 700, fontSize: '0.83rem',
                           padding: '9px', borderRadius: 10,
                           textDecoration: 'none',
@@ -653,7 +618,7 @@ function EquipmentSection() {
               <div
                 className="card border-0 h-100 card-lift card-lift-sm"
                 style={{
-                  borderRadius: 16,
+                  borderRadius: 32,
                   boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
                   overflow: 'hidden',
                 }}
@@ -668,11 +633,11 @@ function EquipmentSection() {
                 >
                   <div style={{ color: eq.color }}>{eq.icon}</div>
                   <span style={{
-                    background: `${eq.color}18`,
+                    background: `color-mix(in srgb, ${eq.color} 9%, transparent)`,
                     color: eq.color,
                     fontSize: '0.68rem', fontWeight: 700,
                     padding: '3px 10px', borderRadius: 100,
-                    border: `1px solid ${eq.color}30`,
+                    border: `1px solid color-mix(in srgb, ${eq.color} 19%, transparent)`,
                   }}>
                     {eq.tag}
                   </span>
@@ -681,7 +646,7 @@ function EquipmentSection() {
                 <div className="card-body p-4 pt-3">
                   <h6
                     className="card-title mb-2"
-                    style={{ fontWeight: 800, color: '#0d1b2a', fontSize: '0.95rem' }}
+                    style={{ fontWeight: 800, color: 'var(--color-primary-blue)', fontSize: '0.95rem' }}
                   >
                     {eq.title}
                   </h6>
@@ -705,7 +670,7 @@ function EquipmentSection() {
         <div
           className="mt-5 p-4 p-md-5 rounded-4 text-center text-md-start"
           style={{
-            background: 'linear-gradient(135deg, #0d1b2a, #1a6fdb)',
+            background: 'linear-gradient(135deg, #1355b0, #1a6fdb)',
             color: '#fff',
           }}
         >
@@ -727,10 +692,10 @@ function EquipmentSection() {
                 id="equipment-explore-btn"
                 className="d-inline-flex align-items-center gap-2"
                 style={{
-                  background: '#fff', color: '#1a6fdb',
-                  fontWeight: 700, padding: '12px 24px',
-                  borderRadius: 10, textDecoration: 'none',
-                  fontSize: '0.9rem',
+                  background: 'var(--color-primary-blue)', color: '#fff',
+                  fontWeight: 500, padding: '16px 24px',
+                  borderRadius: 8, textDecoration: 'none',
+                  fontSize: '0.95rem',
                 }}
               >
                 <Activity size={16} />
@@ -762,17 +727,17 @@ function WhyUsSection() {
             <Reveal key={i} className="col-12 col-sm-6 col-lg-3" delay={i * 80}>
               <div
                 className="text-center p-4 rounded-4 h-100 why-card"
-                style={{ border: '1px solid #e9ecef' }}
+                style={{}}
               >
                 <div style={{
                   width: 60, height: 60, borderRadius: 16,
-                  background: `${item.color}18`, color: item.color,
+                  background: `color-mix(in srgb, ${item.color} 9%, transparent)`, color: item.color,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 1rem',
                 }}>
                   {item.icon}
                 </div>
-                <h6 style={{ fontWeight: 700, color: '#0d1b2a', marginBottom: '0.5rem' }}>{item.title}</h6>
+                <h6 style={{ fontWeight: 700, color: 'var(--color-primary-blue)', marginBottom: '0.5rem' }}>{item.title}</h6>
                 <p style={{ fontSize: '0.82rem', color: '#6c757d', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
               </div>
             </Reveal>
@@ -794,7 +759,7 @@ function CtaBanner() {
         <div
           className="rounded-4 p-4 p-md-5 text-center"
           style={{
-            background: 'linear-gradient(135deg, #1a6fdb 0%, #0fa37f 100%)',
+            background: 'var(--color-primary-blue)',
             position: 'relative', overflow: 'hidden',
           }}
         >
@@ -857,7 +822,7 @@ function CtaBanner() {
 
 function HomeFooter() {
   return (
-    <footer style={{ background: '#0a1628', color: 'rgba(255,255,255,0.7)' }}>
+    <footer style={{ background: 'var(--color-primary-blue)', color: 'rgba(255,255,255,0.7)' }}>
       {/* Main footer */}
       <div className="container py-5">
         <div className="row g-5">
@@ -867,7 +832,7 @@ function HomeFooter() {
             <div className="d-flex align-items-center gap-2 mb-3">
               <div style={{
                 width: 40, height: 40, borderRadius: 10,
-                background: 'linear-gradient(135deg, #1a6fdb, #0fa37f)',
+                background: 'var(--color-primary-blue)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <Heart size={20} color="#fff" />
@@ -983,7 +948,7 @@ function HomeFooter() {
                     width: 34, height: 34, borderRadius: 8, flexShrink: 0,
                     background: 'rgba(26,111,219,0.2)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: '#4cc9f0',
+                    color: '#fff',
                   }}>
                     {c.icon}
                   </div>

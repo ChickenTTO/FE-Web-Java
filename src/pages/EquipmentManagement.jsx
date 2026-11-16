@@ -20,6 +20,11 @@ const CATEGORY_OPTIONS = [
 
 const EMPTY_FORM = { name: '', code: '', category: '', status: 'Active', room: '' };
 
+// Visual-only: flat black outline for invalid fields (replaces Bootstrap red)
+const INVALID_STYLE = { borderColor: 'var(--color-carbon-black)', backgroundImage: 'none' };
+const INVALID_SELECT_STYLE = { borderColor: 'var(--color-carbon-black)' };
+const INVALID_FEEDBACK_STYLE = { color: 'var(--color-carbon-black)', fontWeight: 500, fontSize: 14 };
+
 export default function EquipmentManagement() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,27 +134,27 @@ export default function EquipmentManagement() {
       {/* Header & Button */}
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Quản Lý Thiết Bị Y Tế</h3>
-          <p className="text-muted fs-7 mb-0">Danh sách, bảo trì và cập nhật vị trí thiết bị trong bệnh viện</p>
+          <h3 className="heading-title mb-1" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', color: 'var(--color-carbon-black)' }}>Quản Lý Thiết Bị Y Tế</h3>
+          <p className="fs-7 mb-0" style={{ fontSize: 16, color: 'var(--color-slate)' }}>Danh sách, bảo trì và cập nhật vị trí thiết bị trong bệnh viện</p>
         </div>
         <div className="d-flex gap-2">
           <button className="btn btn-outline-secondary d-flex align-items-center gap-1" onClick={loadData}>
             <RefreshCw size={16} /> Làm mới
           </button>
-          <button className="btn btn-primary d-flex align-items-center gap-2 fw-semibold" onClick={handleOpenCreate}>
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleOpenCreate}>
             <Plus size={18} /> Thêm thiết bị mới
           </button>
         </div>
       </div>
 
       {/* Card chứa Thanh tìm kiếm & Bộ lọc */}
-      <div className="card border-0 shadow-sm rounded-4 mb-4">
+      <div className="card-custom mb-4">
         <div className="card-body p-3">
           <div className="row g-3">
             <div className="col-12 col-md-6 col-lg-8">
               <div className="input-group">
-                <span className="input-group-text bg-white border-end-0">
-                  <Search size={16} className="text-muted" />
+                <span className="input-group-text bg-white border-end-0" style={{ borderWidth: 1.5, borderColor: 'var(--color-ash)' }}>
+                  <Search size={16} style={{ color: 'var(--color-slate)' }} />
                 </span>
                 <input
                   type="text"
@@ -176,11 +181,11 @@ export default function EquipmentManagement() {
       </div>
 
       {/* Bảng Danh Sách Thiết Bị (Bootstrap Responsive Table) */}
-      <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+      <div className="card-custom">
         <div className="card-body p-0">
           <div className="table-responsive">
-            <table className="table table-striped table-hover align-middle mb-0">
-              <thead className="table-dark text-uppercase fs-7">
+            <table className="table-custom align-middle mb-0">
+              <thead className="text-uppercase fs-7">
                 <tr>
                   <th className="ps-4">Mã THB</th>
                   <th>Tên Thiết Bị</th>
@@ -208,20 +213,21 @@ export default function EquipmentManagement() {
                   filteredItems.map((item) => (
                     <tr key={item.id}>
                       <td className="ps-4">
-                        <code className="bg-primary-subtle text-primary fw-bold px-2 py-1 rounded">
+                        <code className="mono-label" style={{ background: 'var(--color-mist-gray)', color: 'var(--color-carbon-black)', padding: '4px 8px', borderRadius: 4 }}>
                           {item.code}
                         </code>
                       </td>
-                      <td className="fw-bold text-dark">{item.name}</td>
+                      <td style={{ fontWeight: 500, color: 'var(--color-carbon-black)' }}>{item.name}</td>
                       <td>{item.category}</td>
                       <td>{item.room}</td>
                       <td>
                         <button
-                          className={`btn btn-sm border-0 fw-semibold ${
+                          className={`badge-custom ${
                             item.status === 'Active'
-                              ? 'bg-success-subtle text-success'
-                              : 'bg-warning-subtle text-warning'
+                              ? 'badge-active'
+                              : 'badge-maintenance'
                           }`}
+                          style={{ border: 0, cursor: 'pointer' }}
                           onClick={() => handleToggleStatus(item)}
                           title="Bấm để đổi nhanh trạng thái"
                         >
@@ -263,9 +269,9 @@ export default function EquipmentManagement() {
       {showModal && (
         <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content rounded-4 border-0 shadow">
-              <div className="modal-header bg-primary text-white">
-                <h5 className="modal-title fw-bold">
+            <div className="modal-content border-0">
+              <div className="modal-header" style={{ background: 'var(--color-carbon-black)', color: 'var(--color-paper-white)', borderBottom: 0 }}>
+                <h5 className="modal-title heading-title" style={{ fontSize: 20 }}>
                   {editItem ? 'Chỉnh Sửa Thông Tin Thiết Bị' : 'Thêm Thiết Bị Y Tế Mới'}
                 </h5>
                 <button
@@ -279,20 +285,21 @@ export default function EquipmentManagement() {
                   <div className="row g-3">
                     {/* Mã thiết bị */}
                     <div className="col-6">
-                      <label className="form-label fw-semibold">Mã thiết bị (*)</label>
+                      <label className="form-label">Mã thiết bị (*)</label>
                       <input
                         type="text"
                         className={`form-control ${formErrors.code ? 'is-invalid' : ''}`}
                         placeholder="EQ-XRAY-01"
                         value={formData.code}
                         onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                        style={formErrors.code ? INVALID_STYLE : undefined}
                       />
-                      {formErrors.code && <div className="invalid-feedback">{formErrors.code}</div>}
+                      {formErrors.code && <div className="invalid-feedback" style={INVALID_FEEDBACK_STYLE}>{formErrors.code}</div>}
                     </div>
 
                     {/* Trạng thái */}
                     <div className="col-6">
-                      <label className="form-label fw-semibold">Trạng thái</label>
+                      <label className="form-label">Trạng thái</label>
                       <select
                         className="form-select"
                         value={formData.status}
@@ -305,53 +312,56 @@ export default function EquipmentManagement() {
 
                     {/* Tên thiết bị */}
                     <div className="col-12">
-                      <label className="form-label fw-semibold">Tên thiết bị (*)</label>
+                      <label className="form-label">Tên thiết bị (*)</label>
                       <input
                         type="text"
                         className={`form-control ${formErrors.name ? 'is-invalid' : ''}`}
                         placeholder="Máy Siêu Âm Màu 4D"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        style={formErrors.name ? INVALID_STYLE : undefined}
                       />
-                      {formErrors.name && <div className="invalid-feedback">{formErrors.name}</div>}
+                      {formErrors.name && <div className="invalid-feedback" style={INVALID_FEEDBACK_STYLE}>{formErrors.name}</div>}
                     </div>
 
                     {/* Phân loại */}
                     <div className="col-12">
-                      <label className="form-label fw-semibold">Phân loại (*)</label>
+                      <label className="form-label">Phân loại (*)</label>
                       <select
                         className={`form-select ${formErrors.category ? 'is-invalid' : ''}`}
                         value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        style={formErrors.category ? INVALID_SELECT_STYLE : undefined}
                       >
                         <option value="">-- Chọn danh mục --</option>
                         {CATEGORY_OPTIONS.map((cat) => (
                           <option key={cat} value={cat}>{cat}</option>
                         ))}
                       </select>
-                      {formErrors.category && <div className="invalid-feedback">{formErrors.category}</div>}
+                      {formErrors.category && <div className="invalid-feedback" style={INVALID_FEEDBACK_STYLE}>{formErrors.category}</div>}
                     </div>
 
                     {/* Phòng trang bị */}
                     <div className="col-12">
-                      <label className="form-label fw-semibold">Phòng trang bị (*)</label>
+                      <label className="form-label">Phòng trang bị (*)</label>
                       <input
                         type="text"
                         className={`form-control ${formErrors.room ? 'is-invalid' : ''}`}
                         placeholder="Phòng Siêu âm 202"
                         value={formData.room}
                         onChange={(e) => setFormData({ ...formData, room: e.target.value })}
+                        style={formErrors.room ? INVALID_STYLE : undefined}
                       />
-                      {formErrors.room && <div className="invalid-feedback">{formErrors.room}</div>}
+                      {formErrors.room && <div className="invalid-feedback" style={INVALID_FEEDBACK_STYLE}>{formErrors.room}</div>}
                     </div>
                   </div>
                 </div>
 
-                <div className="modal-footer bg-light border-0">
+                <div className="modal-footer border-0" style={{ background: 'var(--color-paper-white)' }}>
                   <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
                     Hủy bỏ
                   </button>
-                  <button type="submit" className="btn btn-primary fw-semibold" disabled={submitting}>
+                  <button type="submit" className="btn btn-primary" disabled={submitting}>
                     {submitting ? 'Đang lưu...' : editItem ? 'Cập nhật thiết bị' : 'Thêm thiết bị mới'}
                   </button>
                 </div>
