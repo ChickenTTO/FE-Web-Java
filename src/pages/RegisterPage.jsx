@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useClinic } from "../contexts/ClinicContext";
 import { Field } from "../components/ClinicUI";
 import { uid, DEMO_MODE } from "../services/clinicStore";
-import apiClient from "../services/apiClient";
+import { clinicApi } from "../services/clinicApi";
 export default function RegisterPage() {
   const { commit } = useClinic();
   const { loginDemo } = useAuth();
@@ -53,10 +53,10 @@ export default function RegisterPage() {
         loginDemo(u);
         navigate("/profiles");
       } else {
-        await apiClient.post("/api/v1/auth/register", {
+        await clinicApi.register({
           fullName: f.fullName,
           phone: f.phone,
-          email: f.email,
+          ...(f.email ? { email: f.email } : {}),
           password: f.password,
         });
         navigate("/login", { state: { registered: true } });
@@ -93,6 +93,7 @@ export default function RegisterPage() {
               autoComplete="name"
               required
               minLength={3}
+              maxLength={100}
             />
           </Field>
           <Field label="Số điện thoại">
@@ -104,22 +105,22 @@ export default function RegisterPage() {
               required
             />
           </Field>
-          <Field label="Email">
+          <Field label="Email (không bắt buộc)">
             <input
               className="form-control"
               name="email"
               type="email"
               autoComplete="email"
-              required
             />
           </Field>
-          <Field label="Mật khẩu (tối thiểu 8 ký tự)">
+          <Field label="Mật khẩu (tối thiểu 6 ký tự)">
             <input
               className="form-control"
               name="password"
               type="password"
               autoComplete="new-password"
-              minLength={8}
+              minLength={6}
+              maxLength={50}
               required
             />
           </Field>
@@ -129,7 +130,8 @@ export default function RegisterPage() {
               name="confirm"
               type="password"
               autoComplete="new-password"
-              minLength={8}
+              minLength={6}
+              maxLength={50}
               required
             />
           </Field>

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useClinic } from "../contexts/ClinicContext";
 import { useAuth } from "../contexts/AuthContext";
+import LiveSettings from "./LiveSettings";
 import {
   Heading,
   Metrics,
@@ -28,7 +29,16 @@ import {
   clinicDate,
 } from "../services/clinicStore";
 export function ClinicDashboard() {
-  const { db } = useClinic();
+  const { db, isDemo } = useClinic();
+  if (!isDemo) return <div className="clinic-page">
+    <Heading title="Tổng quan phòng khám" description="Danh mục đang được quản lý trên máy chủ." />
+    <Metrics items={[["Chuyên khoa", db.specialties.length], ["Bác sĩ", db.doctors.length],
+      ["Dịch vụ", db.services.length], ["Người dùng", db.users.length]]} />
+    <div className="clinic-quick-grid">{[["specialties", "Chuyên khoa"], ["rooms", "Phòng khám"],
+      ["doctors", "Bác sĩ"], ["services", "Dịch vụ"], ["timeSlots", "Khung giờ"]].map(([key, label]) =>
+      <Link key={key} to={`/catalog/${key}`}><strong>{label}</strong><span>{db[key].length}</span></Link>)}</div>
+    <p className="clinic-callout">Thống kê lịch hẹn, doanh thu và kho đang chờ BE cung cấp API.</p>
+  </div>;
   const daily = db.appointments.filter(
     (a) =>
       db.schedules.find((s) => s.id === a.scheduleId)?.workDate === today(),
@@ -363,11 +373,12 @@ export function ClinicSecurity({ audit = false }) {
   );
 }
 export function ClinicSettings() {
-  const { db, commit } = useClinic();
+  const { db, commit, isDemo } = useClinic();
   const { user } = useAuth();
   const role = roleOf(user);
   const doctor = db.doctors.find((d) => d.userId === user.id);
   const [error, setError] = useState("");
+  if (!isDemo) return <LiveSettings />;
   return (
     <div className="clinic-page">
       <Heading

@@ -1,5 +1,5 @@
 // Local adapter for UI development. Never use this data as an authorization source.
-export const DEMO_MODE = import.meta.env?.VITE_DEMO_MODE !== "false";
+export const DEMO_MODE = import.meta.env?.VITE_DEMO_MODE === "true";
 export const clinicDate = (value = new Date()) =>
   new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Ho_Chi_Minh",
@@ -21,15 +21,17 @@ export const dateVN = (s) =>
 export const roleOf = (user) => {
   const r = user?.role || user?.roles?.[0];
   return String(
-    typeof r === "object" ? r?.name || r?.authority : r || "PATIENT",
+    typeof r === "object" ? r?.code || r?.authority || r?.name : r || "PATIENT",
   ).replace("ROLE_", "");
 };
 export const homeFor = (user) =>
-  ({
+  (user?.isDemo ? {
     PATIENT: "/my-appointments",
     DOCTOR: "/consultations",
     STAFF: "/appointments",
     ADMIN: "/admin",
+  } : {
+    PATIENT: "/profiles", DOCTOR: "/settings", STAFF: "/catalog/services", ADMIN: "/admin",
   })[roleOf(user)] || "/";
 export const uid = () => crypto.randomUUID();
 export const code = (prefix) =>

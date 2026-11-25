@@ -1,47 +1,41 @@
-import apiClient from "./apiClient";
-// API boundary for the next integration step. Local UI currently uses ClinicContext.
-// Only routes explicitly defined by the supplied BE specification are listed here.
+import apiClient from "./apiClient.js";
+import { collectPages, normalize, resourcePaths, toPayload, unwrap } from "./apiHelpers.js";
 const base = "/api/v1";
-const unwrap = (response) => {
-  if (response.data?.success === false)
-    throw new Error(response.data.message || "Không thể xử lý yêu cầu.");
-  return response.data?.data ?? response.data;
-};
-const get = (path, params) =>
-  apiClient.get(base + path, { params }).then(unwrap);
-const post = (path, data) => apiClient.post(base + path, data).then(unwrap);
-const put = (path, data) => apiClient.put(base + path, data).then(unwrap);
+const get = (path, params) => apiClient.get(base + path, { params }).then(unwrap);
 export const clinicApi = {
-  register: (data) => post("/auth/register", data),
-  sessions: () => get("/auth/sessions"),
-  revokeSession: (id) =>
-    apiClient
-      .delete(`${base}/auth/sessions/${encodeURIComponent(id)}`)
-      .then(unwrap),
-  myProfiles: () => get("/patient-profiles/my"),
-  createProfile: (data) => post("/patient-profiles", data),
-  updateProfile: (id, data) =>
-    put(`/patient-profiles/${encodeURIComponent(id)}`, data),
-  specialties: () => get("/specialties"),
-  services: (params) => get("/services", params),
-  doctors: (params) => get("/doctors", params),
-  doctorSchedules: (id, params) =>
-    get(`/doctors/${encodeURIComponent(id)}/schedules`, params),
-  createSchedules: (data) => post("/schedules/batch", data),
-  appointments: (params) => get("/appointments", params),
-  createAppointment: (data) => post("/appointments", data),
-  updateAppointmentStatus: (id, data) =>
-    apiClient
-      .patch(`${base}/appointments/${encodeURIComponent(id)}/status`, data)
-      .then(unwrap),
-  completeAppointment: (id, data) =>
-    post(`/appointments/${encodeURIComponent(id)}/complete`, data),
-  createPayment: (data) => post("/payments", data),
-  supplies: (params) => get("/inventory/supplies", params),
-  createSupply: (data) => post("/inventory/supplies", data),
-  expiringBatches: (params) => get("/inventory/batches/expiring", params),
-  importInventory: (data) => post("/inventory/import", data),
-  exportToRoom: (data) => post("/inventory/export-room", data),
-  adjustInventory: (data) => post("/inventory/adjust", data),
-  transactions: (params) => get("/inventory/transactions", params),
+  register: (data) => apiClient.post(`${base}/auth/register`, data).then(unwrap),
+  async list(resource, { publicOnly = false } = {}) {
+    const path = resourcePaths[resource];
+    if (!path) throw new Error("Swagger chưa cung cấp API cho chức năng này.");
+    const data = resource === "specialties" && publicOnly ? await get("/specialties/active")
+      : await collectPages((page) => get(path, { page, size: 100 }), resource === "services" ? 0 : 1);
+    return data.map((row) => normalize(resource, row));
+  },
+  async save(resource, values) {
+    const path = resourcePaths[resource];
+    const creating = !values.id;
+    const payload = toPayload(resource, values, creating);
+    const response = creating ? await apiClient.post(base + path, payload)
+      : await apiClient.put(`${base}${path}/${encodeURIComponent(values.id)}`, payload);
+    return normalize(resource, unwrap(response));
+  },
+  async status(resource, row) {
+    if (!["specialties", "rooms", "services", "doctors", "users"].includes(resource))
+      throw new Error("Chức năng này chưa có API đổi trạng thái.");
+    const suffix = resource === "doctors" ? "availability" : "status";
+    const payload = resource === "doctors" ? { isAvailable: !row.isActive } : { isActive: !row.isActive };
+    return normalize(resource, unwrap(await apiClient.patch(
+      `${base}${resourcePaths[resource]}/${encodeURIComponent(row.id)}/${suffix}`, payload)));
+  },
+  delete: (resource, id) => {
+    if (!["specialties", "rooms", "timeSlots", "users"].includes(resource))
+      throw new Error("Swagger chưa cung cấp API xóa mục này.");
+    return apiClient.delete(`${base}${resourcePaths[resource]}/${encodeURIComponent(id)}`).then(unwrap);
+  },
+  profile: () => get("/users/profile"),
+  updateProfile: (data) => apiClient.put(`${base}/users/profile`, data).then(unwrap),
+  changePassword: (data) => apiClient.patch(`${base}/users/change-password`, data).then(unwrap),
+  resetPassword: (id, data) => apiClient.patch(`${base}/users/${encodeURIComponent(id)}/reset-password`, data).then(unwrap),
+  myDoctorProfile: () => get("/doctor-profiles/me").then((row) => normalize("doctors", row)),
+  updateMyDoctorProfile: (data) => apiClient.patch(`${base}/doctor-profiles/me`, data).then(unwrap),
 };

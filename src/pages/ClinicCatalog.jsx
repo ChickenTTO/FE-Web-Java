@@ -11,6 +11,7 @@ import {
   Badge,
 } from "../components/ClinicUI";
 import { uid, money, roleOf, today } from "../services/clinicStore";
+import { apiError } from "../services/apiHelpers";
 
 // Fields reflect BE resources; all identifiers stay intact for API integration.
 const catalogs = {
@@ -127,25 +128,42 @@ const catalogs = {
   },
 };
 export default function ClinicCatalog({ resource }) {
-  const { db, commit } = useClinic();
+  const { db, commit, isDemo, saveResource, toggleStatus } = useClinic();
   const { user } = useAuth();
   const role = roleOf(user);
-  const config = catalogs[resource];
+  const baseConfig = catalogs[resource];
+  const remoteFields = {
+    rooms: [["name", "Số phòng"], ["location", "Tòa nhà / Khu vực", "optional"]],
+    doctors: [["userId", "Tài khoản bác sĩ", "doctorUsers"], ["specialtyId", "Chuyên khoa", "specialties"],
+      ["qualification", "Học vị / Chức danh", "optional"], ["experience", "Số năm kinh nghiệm", "number"],
+      ["consultationFee", "Phí khám (VNĐ)", "number"], ["description", "Tiểu sử chuyên môn", "textarea"]],
+    timeSlots: [["startTime", "Bắt đầu", "time"], ["endTime", "Kết thúc", "time"],
+      ["session", "Buổi khám", "enum:morning,afternoon,evening"]],
+    patients: baseConfig.fields.filter(([key]) => !["relationship", "insuranceNumber"].includes(key)),
+    services: baseConfig.fields.map((field) => field[0] === "specialtyId" ? ["specialtyId", "Chuyên khoa (tùy chọn)", "specialties?"] : field)
+      .concat([["estimatedDurationMin", "Thời gian khám (phút)", "number"]]),
+  };
+  const config = isDemo ? baseConfig : { ...baseConfig, fields: remoteFields[resource] || baseConfig.fields };
   const [editing, setEditing] = useState(null);
+  if (!isDemo && resource === "users" && editing && !editing.id)
+    config.fields = [...config.fields, ["password", "Mật khẩu khởi tạo", "password"]];
   const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
   const own = resource === "patients" && role === "PATIENT";
   const rows = db[resource].filter((r) => !own || r.userId === user.id);
-  const canEdit =
+  const canEdit = (!isDemo && resource === "patients") ? false : (
     role === "ADMIN" ||
     (role === "STAFF" &&
       ["patients", "supplies", "suppliers", "categories"].includes(resource)) ||
-    own;
+    own);
+  const canToggle = !isDemo && role === "STAFF" && ["doctors", "services"].includes(resource);
   const relation = (type) =>
     type === "doctorUsers"
       ? db.users.filter((u) => u.role === "DOCTOR")
       : db[type?.replace("?", "")] || null;
-  function save(e) {
+  async function save(e) {
     e.preventDefault();
+    if (saving) return;
     setError("");
     try {
       const values = Object.fromEntries(new FormData(e.currentTarget));
@@ -212,7 +230,10 @@ export default function ClinicCatalog({ resource }) {
         values.role !== editing.role
       )
         throw new Error("Không thể tự thay đổi vai trò hiện tại.");
-      commit((next) => {
+      setSaving(true);
+      if (!isDemo) {
+        await saveResource(resource, { ...editing, ...values });
+      } else commit((next) => {
         const row = {
           ...editing,
           ...values,
@@ -228,8 +249,8 @@ export default function ClinicCatalog({ resource }) {
       });
       setEditing(null);
     } catch (err) {
-      setError(err.message);
-    }
+      setError(apiError(err));
+    } finally { setSaving(false); }
   }
   const columns = config.fields
     .slice(0, resource === "patients" ? 5 : 4)
@@ -267,15 +288,21 @@ export default function ClinicCatalog({ resource }) {
         >
           <Pencil size={14} /> {canEdit ? "Chỉnh sửa" : "Chi tiết"}
         </button>
-        {canEdit && "isActive" in r && r.id !== user.id && (
+        {(canEdit || canToggle) && "isActive" in r && !(resource === "users" && r.id === user.id) && (
           <button
             className="btn btn-light btn-sm"
             aria-label={r.isActive ? "Ngừng hoạt động" : "Kích hoạt"}
-            onClick={() =>
-              commit((n) => {
+            disabled={saving}
+            onClick={async () => {
+              setError(""); setSaving(true);
+              try {
+                if (!isDemo) await toggleStatus(resource, r);
+                else commit((n) => {
                 n[resource].find((x) => x.id === r.id).isActive = !r.isActive;
-              })
-            }
+                });
+              } catch (err) { setError(apiError(err)); }
+              finally { setSaving(false); }
+            }}
           >
             <Power size={14} />
           </button>
@@ -299,6 +326,8 @@ export default function ClinicCatalog({ resource }) {
           )
         }
       />
+      {!isDemo && resource === "patients" && <div className="clinic-callout mb-3">Hồ sơ hiện chỉ hỗ trợ tra cứu. Chức năng tạo và chỉnh sửa chưa khả dụng.</div>}
+      {error && !editing && <p className="clinic-error" role="alert">{error}</p>}
       <DataTable rows={rows} columns={columns} />
       {editing && (
         <Modal
@@ -319,11 +348,11 @@ export default function ClinicCatalog({ resource }) {
                       name={key}
                       defaultValue={editing[key] || ""}
                       required={!type.endsWith("?")}
-                      disabled={!canEdit}
+                      disabled={!canEdit || (!isDemo && key === "userId" && Boolean(editing.id))}
                     >
                       <option value="">Chọn {label.toLowerCase()}</option>
                       {relation(type)
-                        .filter((x) => x.id !== editing.id)
+                        .filter((x) => !isDemo || x.id !== editing.id)
                         .map((x) => (
                           <option key={x.id} value={x.id}>
                             {x.name}
@@ -357,18 +386,19 @@ export default function ClinicCatalog({ resource }) {
                       className="form-control"
                       name={key}
                       defaultValue={editing[key] ?? ""}
-                      disabled={!canEdit}
+                      disabled={!canEdit || (!isDemo && resource === "users" && key === "phone" && Boolean(editing.id))}
                       type={
                         ["number", "positive"].includes(type)
                           ? "number"
-                          : ["email", "date", "time", "tel"].includes(type)
+                          : ["email", "date", "time", "tel", "password"].includes(type)
                             ? type
                             : "text"
                       }
                       min={type === "positive" ? 1 : 0}
+                      minLength={type === "password" ? 6 : undefined}
                       max={key === "dateOfBirth" ? today() : undefined}
                       required={type !== "optional"}
-                      maxLength={key === "phone" ? 10 : 250}
+                      maxLength={key === "phone" ? 10 : type === "password" ? 50 : 250}
                     />
                   )}
                 </Field>
@@ -388,7 +418,7 @@ export default function ClinicCatalog({ resource }) {
                 Đóng
               </button>
               {canEdit && (
-                <button className="btn btn-primary">Lưu thông tin</button>
+                <button className="btn btn-primary" disabled={saving}>{saving ? "Đang lưu..." : "Lưu thông tin"}</button>
               )}
             </div>
           </form>

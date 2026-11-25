@@ -51,7 +51,7 @@ export default function LoginPage() {
       console.error('Đăng nhập thất bại:', error);
       const serverMessage =
         error.response?.data?.message ||
-        error.response?.data?.error ||
+        error.response?.data?.error || error.message ||
         (error.response?.status === 401
           ? 'Tài khoản hoặc mật khẩu không chính xác.'
           : 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại dịch vụ Backend.');

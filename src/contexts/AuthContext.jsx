@@ -1,17 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import authService from '../services/authService';
+import { DEMO_MODE } from '../services/clinicStore';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => authService.getCurrentUser());
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Khi component mount, kiểm tra phiên đăng nhập đã lưu
+    let active = true;
     const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
-    setIsLoading(false);
+    if (currentUser?.isDemo && DEMO_MODE) {
+      setUser(currentUser);
+      setIsLoading(false);
+    } else if (currentUser && !currentUser.isDemo) {
+      authService.restore().then((restored) => {
+        if (active) setUser(restored);
+      }).catch(() => {
+        if (active) { authService.removeCurrentUser(); setUser(null); }
+      }).finally(() => { if (active) setIsLoading(false); });
+    } else {
+      if (currentUser?.isDemo) authService.removeCurrentUser();
+      setIsLoading(false);
+    }
 
     // Lắng nghe sự kiện phiên đăng nhập hết hạn từ apiClient (khi refresh-token thất bại)
     const handleSessionExpired = () => {
@@ -21,6 +33,7 @@ export function AuthProvider({ children }) {
 
     window.addEventListener('auth:session-expired', handleSessionExpired);
     return () => {
+      active = false;
       window.removeEventListener('auth:session-expired', handleSessionExpired);
     };
   }, []);
@@ -37,12 +50,14 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    if (user?.isDemo) authService.removeCurrentUser();
-    else await authService.logout();
-    setUser(null);
+    try {
+      if (user?.isDemo) authService.removeCurrentUser();
+      else await authService.logout();
+    } finally { setUser(null); }
   };
 
   const loginDemo = (profile) => {
+    if (!DEMO_MODE) throw new Error('Chế độ xem thử đã tắt.');
     const demoUser = { ...profile, fullName: profile.fullName || profile.name, isDemo: true };
     authService.setCurrentUser(demoUser);
     setUser(demoUser);

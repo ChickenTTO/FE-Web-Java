@@ -5,7 +5,7 @@ import { useClinic } from "../contexts/ClinicContext";
 import { Heading, Empty, Modal, Badge } from "../components/ClinicUI";
 import { today, money, dateVN } from "../services/clinicStore";
 export default function ClinicDirectory({ kind = "doctors" }) {
-  const { db } = useClinic();
+  const { db, isDemo } = useClinic();
   const [params] = useSearchParams();
   const [specialty, setSpecialty] = useState(params.get("specialty") || "");
   const [q, setQ] = useState("");
@@ -109,6 +109,7 @@ export default function ClinicDirectory({ kind = "doctors" }) {
         <Modal title={selected.name} onClose={() => setSelected(null)}>
           <p>{selected.description}</p>
           <h3 className="h5">Lịch tiếp nhận</h3>
+          {!isDemo && <p>Lịch tiếp nhận của bác sĩ hiện chưa khả dụng.</p>}
           {db.schedules
             .filter(
               (s) =>

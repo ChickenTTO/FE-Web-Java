@@ -50,7 +50,9 @@ test("invalid quantities are rejected", () => {
 test("roles never default to ADMIN and normalize Spring role names", () => {
   assert.equal(roleOf({}), "PATIENT");
   assert.equal(roleOf({ roles: [{ authority: "ROLE_DOCTOR" }] }), "DOCTOR");
-  assert.equal(homeFor({ role: "STAFF" }), "/appointments");
+  assert.equal(homeFor({ role: "STAFF" }), "/catalog/services");
+  assert.equal(homeFor({ role: "STAFF", isDemo: true }), "/appointments");
+  assert.equal(roleOf({ role: { code: "ADMIN", name: "Quản trị viên" } }), "ADMIN");
   assert.ok(dateAfter(1) > today());
 });
 test("report dates use Vietnam midnight rather than UTC midnight", () => {

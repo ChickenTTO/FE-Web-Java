@@ -11,6 +11,8 @@ import AdminNavbar from "./components/AdminNavbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import ClinicDataBoundary from "./components/ClinicDataBoundary";
+import { useClinic } from "./contexts/ClinicContext";
 import HomePage from "./pages/HomePage";
 const EquipmentManagement = lazy(() => import("./pages/EquipmentManagement"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -39,7 +41,7 @@ function PublicLayout() {
     <>
       <Navbar />
       <main className="public-content">
-        <PageTransition />
+        <ClinicDataBoundary><PageTransition /></ClinicDataBoundary>
       </main>
       <Footer />
     </>
@@ -48,6 +50,7 @@ function PublicLayout() {
 function WorkspaceLayout() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { isDemo } = useClinic();
   return (
     <div className="app-shell">
       <Sidebar open={open} onClose={() => setOpen(false)} />
@@ -61,11 +64,11 @@ function WorkspaceLayout() {
       <div className="main-content">
         <AdminNavbar onMenu={() => setOpen(!open)} />
         <main className="page-wrapper">
-          <div className="clinic-demo-banner" key={location.pathname}>
+          {isDemo && <div className="clinic-demo-banner" key={location.pathname}>
             <span className="clinic-demo-dot" />
             BẢN XEM THỬ GIAO DIỆN · Dữ liệu mẫu lưu trên trình duyệt
-          </div>
-          <PageTransition />
+          </div>}
+          <ClinicDataBoundary><PageTransition /></ClinicDataBoundary>
         </main>
       </div>
     </div>

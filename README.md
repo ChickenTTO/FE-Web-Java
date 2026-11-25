@@ -1,23 +1,18 @@
-# React + Vite
+# MediCare — React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+FE phòng khám đã kết nối các API hiện có trong Swagger của BE.
 
-Currently, two official plugins are available:
+```sh
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Mở `http://localhost:5173`. Mặc định chạy API thật, proxy tới `https://covetable-unthreateningly-nia.ngrok-free.dev`. Đăng nhập bằng tài khoản BE; nút chọn vai trò mẫu mặc định đã tắt.
 
-## React Compiler
+Sao chép `.env.example` thành `.env.local` nếu cần đổi BE. Cấu hình, phạm vi API đã ghép, các chức năng đang chờ BE và cách kiểm tra: [API_INTEGRATION.md](./API_INTEGRATION.md).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-# FE-Web-Java
-
-## Các màn hình phòng khám
-
-Chạy `npm run dev`, mở `/login` và chọn một trong bốn vai trò xem thử để kiểm tra toàn bộ luồng giao diện. Các màn hình mới hiện sử dụng dữ liệu mẫu lưu trên trình duyệt. Form đăng nhập BE hiện tại được giữ riêng.
-
-Danh sách trang, quyền truy cập, cách chạy kiểm tra và hướng dẫn chuyển sang API thật: [API_INTEGRATION.md](./API_INTEGRATION.md).
+```sh
+npm run build
+npm run lint
+npm test
+```

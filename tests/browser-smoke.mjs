@@ -10,7 +10,7 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
-const root = "http://127.0.0.1:5173";
+const root = process.env.SMOKE_BASE_URL || "http://127.0.0.1:5173";
 async function open(path) {
   console.log("route", path);
   await page.goto(root + path, { waitUntil: "domcontentloaded" });

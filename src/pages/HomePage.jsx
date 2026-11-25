@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import { getClinicRooms } from '../services/api';
 import Reveal from '../components/Reveal';
+import { useClinic } from '../contexts/ClinicContext';
+import { Empty } from '../components/ClinicUI';
 
 /* ─────────────────────────────────────────────────────────────
    Data tĩnh
@@ -996,21 +998,35 @@ function HomeFooter() {
    ───────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
+  const { db, isDemo } = useClinic();
   const [rooms, setRooms]     = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isDemo) return;
     getClinicRooms()
       .then(setRooms)
       .finally(() => setLoading(false));
-  }, []);
+  }, [isDemo]);
 
   return (
     <>
       <HeroSection />
       <StatsBar />
 
-      {loading ? (
+      {!isDemo ? (
+        <section id="clinics" className="container py-5">
+          <SectionHeader badge="MEDICARE / CHUYÊN KHOA" title="Chuyên khoa khám bệnh" subtitle="Tra cứu chuyên khoa và đội ngũ bác sĩ." />
+          <div className="clinic-directory-grid">
+            {db.specialties.map((item) => <article className="clinic-directory-card" key={item.id}>
+              <Stethoscope size={28} /><h2>{item.name}</h2><p>{item.description}</p>
+              <Link className="btn btn-primary" to={`/doctors?specialty=${item.id}`}>Xem bác sĩ</Link>
+            </article>)}
+          </div>
+          {!db.specialties.length && <Empty text="Chưa có chuyên khoa được công bố." />}
+          <Link className="btn btn-outline-primary mt-4" to="/services">Xem dịch vụ và giá khám</Link>
+        </section>
+      ) : loading ? (
         <section style={{ background: '#f8f9fa', padding: '5rem 0' }} aria-busy="true" aria-live="polite">
           <div className="container">
             <div className="row g-4">
