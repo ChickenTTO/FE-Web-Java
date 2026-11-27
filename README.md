@@ -1,15 +1,15 @@
 # MediCare — React + Vite
 
-FE phòng khám đã kết nối các API hiện có trong Swagger của BE.
+Web mặc định dùng dữ liệu mock để chạy báo cáo, không cần bật BE.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Mở `http://localhost:5173`. Mặc định chạy API thật, proxy tới `https://covetable-unthreateningly-nia.ngrok-free.dev`. Đăng nhập bằng tài khoản BE; nút chọn vai trò mẫu mặc định đã tắt.
+Mở `http://localhost:5173/login`. Đăng nhập bằng tài khoản mẫu `admin`, `doctor`, `staff` hoặc `patient`, cùng mật khẩu `123456`. Có thể dùng email hoặc số điện thoại của tài khoản mẫu. Dữ liệu được lưu trên trình duyệt.
 
-Sao chép `.env.example` thành `.env.local` nếu cần đổi BE. Cấu hình, phạm vi API đã ghép, các chức năng đang chờ BE và cách kiểm tra: [API_INTEGRATION.md](./API_INTEGRATION.md).
+Khi cần nối lại BE, đặt `VITE_DEMO_MODE=false` trong `.env.local` rồi khởi động lại Vite. Chi tiết tích hợp BE được giữ tại [API_INTEGRATION.md](./API_INTEGRATION.md).
 
 ```sh
 npm run build

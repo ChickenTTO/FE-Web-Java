@@ -1,6 +1,10 @@
 import axios from "axios";
+import { DEMO_MODE } from "./clinicStore.js";
 import { unwrap } from "./apiHelpers.js";
 const config = {
+  ...(DEMO_MODE ? { adapter: async () => {
+    throw new Error("Đang dùng dữ liệu mẫu. Kết nối BE đã tạm tắt.");
+  } } : {}),
   baseURL: import.meta.env?.VITE_API_BASE_URL || "",
   withCredentials: true, timeout: 20000,
   headers: { Accept: "application/json", "ngrok-skip-browser-warning": "true" },

@@ -12,8 +12,7 @@ export default function LoginPage() {
   const { login, loginDemo } = useAuth();
   const { db, commit } = useClinic();
 
-  const demo = (role) => {
-    const profile = db.users.find(u => u.id === `demo-${role.toLowerCase()}`);
+  const demo = (profile) => {
     const sessionId = uid();
     commit(n => {
       n.sessions.push({id:sessionId,userId:profile.id,deviceName:currentDeviceName,lastUsedAt:new Date().toISOString(),expiresAt:dateAfter(7),isRevoked:false});
@@ -44,6 +43,18 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
+      if (DEMO_MODE) {
+        const account = identifier.trim().toLowerCase();
+        const profile = db.users.find(u =>
+          [u.username, u.email, u.phone, u.id?.replace('demo-', '')]
+            .some(value => value && String(value).toLowerCase() === account));
+        if (!profile || password !== '123456')
+          throw new Error('Tài khoản hoặc mật khẩu không chính xác.');
+        if (profile.isActive === false)
+          throw new Error('Tài khoản đã bị vô hiệu hóa.');
+        demo(profile);
+        return;
+      }
       const result = await login(identifier.trim(), password);
       // Đăng nhập thành công, chuyển hướng người dùng
       navigate(location.state?.from?.pathname || homeFor(result.user), { replace: true });
@@ -130,6 +141,7 @@ export default function LoginPage() {
           )}
 
           {location.state?.registered && <p role="status">Đăng ký thành công. Vui lòng đăng nhập.</p>}
+          {DEMO_MODE && <p className="small text-muted">Tài khoản mẫu: admin, doctor, staff, patient. Mật khẩu: 123456.</p>}
           <form onSubmit={handleSubmit}>
             {/* Identifier Field (username/email/phone) */}
             <div className="mb-3">
@@ -256,7 +268,6 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-3 text-center">Chưa có tài khoản? <Link to="/register">Đăng ký</Link></p>
-          {DEMO_MODE && <div className="clinic-demo-login"><div className="mono-label mb-2">XEM THỬ GIAO DIỆN</div><p className="small">Dữ liệu mẫu trên trình duyệt, không cần kết nối BE.</p><div className="clinic-demo-grid">{[['PATIENT','Bệnh nhân'],['DOCTOR','Bác sĩ'],['STAFF','Lễ tân / Kho'],['ADMIN','Quản trị viên']].map(([r,label])=><button type="button" key={r} className="btn btn-light" onClick={()=>demo(r)}>{label}</button>)}</div></div>}
           {/* Security Note */}
           <div
             className="mt-4 p-2 text-center text-muted d-flex align-items-center justify-content-center gap-1"

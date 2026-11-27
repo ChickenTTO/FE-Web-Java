@@ -1,3 +1,5 @@
+> **Cấu hình báo cáo hiện tại:** mặc định dùng mock data và tạm chặn mọi request BE. Vào /login, nhập admin / doctor / staff / patient với mật khẩu 123456. Đặt VITE_DEMO_MODE=false trong .env.local rồi khởi động lại Vite để dùng lại tích hợp BE bên dưới.
+
 # Tích hợp API BE
 
 Đối chiếu ngày 25/11/2026 với Swagger: https://covetable-unthreateningly-nia.ngrok-free.dev/swagger-ui/index.html. OpenAPI JSON thực tế nằm tại `/api-docs`, không phải `/v3/api-docs`.

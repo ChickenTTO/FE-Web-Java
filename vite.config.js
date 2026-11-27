@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: 5173,
-      proxy: {
+      proxy: env.VITE_DEMO_MODE === 'false' ? {
         '/api': {
           target: env.API_PROXY_TARGET || 'https://covetable-unthreateningly-nia.ngrok-free.dev',
           changeOrigin: true,
@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
           cookieDomainRewrite: '',
           headers: { 'ngrok-skip-browser-warning': 'true' },
         },
-      },
+      } : {},
     },
   };
 })

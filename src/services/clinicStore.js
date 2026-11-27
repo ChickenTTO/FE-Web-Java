@@ -1,5 +1,5 @@
 // Local adapter for UI development. Never use this data as an authorization source.
-export const DEMO_MODE = import.meta.env?.VITE_DEMO_MODE === "true";
+export const DEMO_MODE = import.meta.env?.VITE_DEMO_MODE !== "false";
 export const clinicDate = (value = new Date()) =>
   new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Ho_Chi_Minh",

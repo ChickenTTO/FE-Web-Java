@@ -14,14 +14,14 @@ export function AuthProvider({ children }) {
     if (currentUser?.isDemo && DEMO_MODE) {
       setUser(currentUser);
       setIsLoading(false);
-    } else if (currentUser && !currentUser.isDemo) {
+    } else if (!DEMO_MODE && currentUser && !currentUser.isDemo) {
       authService.restore().then((restored) => {
         if (active) setUser(restored);
       }).catch(() => {
         if (active) { authService.removeCurrentUser(); setUser(null); }
       }).finally(() => { if (active) setIsLoading(false); });
     } else {
-      if (currentUser?.isDemo) authService.removeCurrentUser();
+      if (currentUser) authService.removeCurrentUser();
       setIsLoading(false);
     }
 
